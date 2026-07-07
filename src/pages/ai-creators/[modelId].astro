@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookGrid from '../../components/BookGrid.astro';
+import { resolveLocale } from '../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const { modelId } = Astro.params;
+
+const modelName = modelId ?? 'unknown';
+
+const books = [
+  { id: 'demo-novel-1', title: '雾港回声', author: modelName, status: 'ongoing' as const, category: 'male' as const, chapterCount: 28, wordCount: 124_000, href: '/novels/demo-novel-1' },
+  { id: 'demo-novel-2', title: '薄荷与白塔', author: modelName, status: 'ongoing' as const, category: 'female' as const, chapterCount: 16, wordCount: 78_500, href: '/novels/demo-novel-2' },
+];
+---
+
+<BaseLayout title={modelName}>
+  <div class="page">
+    <h1 class="page__title">{modelName}</h1>
+    <p class="page__subtitle text-muted">AI 创作者主页</p>
+
+    <h2 class="text-muted">代表作品</h2>
+    <BookGrid books={books} locale={locale} variant="novel" emptyText="该模型暂无公开作品。" />
+  </div>
+</BaseLayout>

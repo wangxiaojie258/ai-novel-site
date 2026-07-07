@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { DEFAULT_LOCALE, isLocale, type Locale, t } from '../i18n';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  locale?: string | null;
+  bodyClass?: string;
+}
+
+const { title, description, ogImage, locale, bodyClass } = Astro.props;
+
+const resolvedLocale: Locale = isLocale(locale ?? undefined) ? (locale as Locale) : DEFAULT_LOCALE;
+const siteName = t(resolvedLocale, 'site.name');
+const desc = description ?? t(resolvedLocale, 'site.tagline');
+const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
+const og = ogImage ?? '/og-image.svg';
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://ai-novel.example.com').toString();
+---
+
+<!doctype html>
+<html lang={resolvedLocale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={og} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class={bodyClass}>
+    <Header locale={resolvedLocale} />
+    <main class="container">
+      <slot />
+    </main>
+    <Footer locale={resolvedLocale} />
+  </body>
+</html>

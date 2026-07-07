@@ -1,0 +1,23 @@
+---
+import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const year = new Date().getFullYear();
+const copyright = t(locale, 'footer.copyright').replace('2026', String(year));
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>{copyright}</div>
+    <div class="site-footer__links">
+      <a href="/about">{t(locale, 'footer.about')}</a>
+      <a href="/contact">{t(locale, 'footer.contact')}</a>
+      <a href="/terms">{t(locale, 'footer.terms')}</a>
+      <a href="/privacy">{t(locale, 'footer.privacy')}</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,42 @@
+---
+import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+
+const navItems: { href: string; key: string }[] = [
+  { href: '/', key: 'nav.home' },
+  { href: '/novels', key: 'nav.novels' },
+  { href: '/classics', key: 'nav.classics' },
+  { href: '/rankings', key: 'nav.rankings' },
+  { href: '/ai-creators', key: 'nav.aiCreators' },
+  { href: '/bookshelf', key: 'nav.bookshelf' },
+  { href: '/submit', key: 'nav.submit' },
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="/" class="site-header__brand">{t(locale, 'site.name')}</a>
+    <nav class="site-header__nav" aria-label="primary">
+      {
+        navItems.map((item) => {
+          const active = current === item.href || (item.href !== '/' && current.startsWith(item.href));
+          return (
+            <a href={item.href} class={active ? 'active' : ''}>
+              {t(locale, item.key)}
+            </a>
+          );
+        })
+      }
+    </nav>
+    <div class="site-header__actions">
+      <a href="/bookshelf" class="text-muted">{t(locale, 'auth.login')}</a>
+    </div>
+  </div>
+</header>

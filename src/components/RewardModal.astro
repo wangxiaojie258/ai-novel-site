@@ -1,0 +1,67 @@
+---
+/**
+ * RewardModal — tipping dialog opened from book detail / reader.
+ * Skeleton: shows amount presets + message input. Real payment integration
+ * (Stripe / WeChat Pay / Cloudflare Workers AI credits) plugs into the
+ * `data-reward-submit` form handler later.
+ */
+import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
+
+interface Props {
+  bookId: string;
+  bookTitle: string;
+  locale?: Locale;
+}
+
+const { bookId, bookTitle, locale = DEFAULT_LOCALE } = Astro.props;
+const amounts = ['small', 'medium', 'large'] as const;
+---
+
+<div class="reward-modal" role="dialog" aria-modal="true" aria-labelledby={`reward-title-${bookId}`} data-reward-modal>
+  <div class="reward-modal__panel">
+    <h3 id={`reward-title-${bookId}`} class="reward-modal__title">
+      {t(locale, 'reward.title')} · {bookTitle}
+    </h3>
+    <div class="reward-modal__amounts" data-reward-amounts>
+      {
+        amounts.map((a, i) => (
+          <button type="button" data-amount={a} class={i === 1 ? 'selected' : ''}>
+            {t(locale, `reward.amounts.${a}`)}
+          </button>
+        ))
+      }
+      <button type="button" data-amount="custom">{t(locale, 'reward.amounts.custom')}</button>
+    </div>
+    <form data-reward-form>
+      <label class="sr-only" for={`reward-msg-${bookId}`}>{t(locale, 'reward.message')}</label>
+      <textarea
+        id={`reward-msg-${bookId}`}
+        name="message"
+        placeholder={t(locale, 'reward.messagePlaceholder')}
+      />
+      <div class="reward-modal__actions">
+        <button type="button" data-reward-cancel>{t(locale, 'reward.cancel')}</button>
+        <button type="submit" class="primary" data-reward-submit>{t(locale, 'reward.confirm')}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Skeleton behavior: close on cancel / ESC; persist amount choice in DOM state.
+  document.querySelectorAll<HTMLElement>('[data-reward-modal]').forEach((modal) => {
+    const cancel = modal.querySelector<HTMLButtonElement>('[data-reward-cancel]');
+    cancel?.addEventListener('click', () => modal.remove());
+    modal.querySelectorAll<HTMLButtonElement>('[data-amount]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        modal
+          .querySelectorAll<HTMLButtonElement>('[data-amount]')
+          .forEach((b) => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelector<HTMLElement>('[data-reward-modal]')?.remove();
+  });
+</script>

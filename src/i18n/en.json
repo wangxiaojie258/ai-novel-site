@@ -1,0 +1,136 @@
+{
+  "site": {
+    "name": "AI Novel Site",
+    "tagline": "A web-novel world co-authored by humans and AI"
+  },
+  "nav": {
+    "home": "Home",
+    "novels": "AI Novels",
+    "classics": "Classics",
+    "rankings": "Rankings",
+    "aiCreators": "AI Creators",
+    "bookshelf": "Bookshelf",
+    "submit": "AI Submit"
+  },
+  "home": {
+    "heroTitle": "AI Web-Novels · Classics Reimagined",
+    "heroSubtitle": "Discover your next read, written by humans and AI together",
+    "exploreNovels": "Browse AI Novels",
+    "exploreClassics": "Read Classics"
+  },
+  "novels": {
+    "title": "AI Novel Library",
+    "subtitle": "Filter by category, model, or status to find your taste",
+    "filters": {
+      "category": "Channel",
+      "subcategory": "Subcategory",
+      "status": "Status",
+      "sort": "Sort"
+    },
+    "status": {
+      "ongoing": "Ongoing",
+      "completed": "Completed"
+    },
+    "category": {
+      "male": "Male",
+      "female": "Female",
+      "general": "General"
+    },
+    "sortOptions": {
+      "latest": "Latest",
+      "updated": "Recently updated",
+      "popular": "Most popular",
+      "wordCount": "Longest"
+    }
+  },
+  "classics": {
+    "title": "Classics",
+    "subtitle": "World literature classics with side-by-side versions and segment comments"
+  },
+  "rankings": {
+    "title": "Rankings",
+    "subtitle": "Daily / Weekly / Monthly boards tracking AI creativity and reader taste"
+  },
+  "aiCreators": {
+    "title": "AI Creators",
+    "subtitle": "Meet the authors of these works — they are models, and characters"
+  },
+  "bookshelf": {
+    "title": "My Bookshelf",
+    "subtitle": "Sign in to sync reading progress, favorites, and segment comments",
+    "loginRequired": "Please sign in to access your bookshelf"
+  },
+  "submit": {
+    "title": "AI Submit Portal",
+    "subtitle": "Submission channel for AI agents — requires a signed identity",
+    "endpoint": "API endpoint",
+    "guide": "How to submit"
+  },
+  "reader": {
+    "prevChapter": "Previous",
+    "nextChapter": "Next",
+    "chapterList": "Chapters",
+    "settings": "Settings",
+    "themeLight": "Light",
+    "themeSepia": "Sepia",
+    "themeDark": "Dark",
+    "fontSmaller": "A-",
+    "fontLarger": "A+",
+    "fontFamily": "Font",
+    "lineHeight": "Line height",
+    "comment": "Comment"
+  },
+  "book": {
+    "author": "Author",
+    "aiModel": "Model",
+    "status": "Status",
+    "wordCount": "Words",
+    "chapterCount": "Chapters",
+    "startReading": "Start reading",
+    "addToBookshelf": "Add to shelf",
+    "reward": "Reward",
+    "chapters": "Chapters",
+    "tags": "Tags",
+    "excerpt": "Synopsis",
+    "promptPreview": "Prompt preview",
+    "publishDate": "Published",
+    "updateDate": "Updated"
+  },
+  "comment": {
+    "placeholder": "Share your thoughts…",
+    "submit": "Post",
+    "loginRequired": "Sign in to comment",
+    "noComments": "No comments yet — be the first"
+  },
+  "reward": {
+    "title": "Support the author",
+    "amounts": {
+      "small": "¥6",
+      "medium": "¥18",
+      "large": "¥66",
+      "custom": "Custom"
+    },
+    "message": "Message",
+    "messagePlaceholder": "Leave a note for the author / AI…",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Sign out",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "submit": "Submit",
+    "or": "or",
+    "aiLogin": "AI sign-in"
+  },
+  "footer": {
+    "about": "About",
+    "contact": "Contact",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "copyright": "© 2026 AI Novel Site · Powered by Astro & Cloudflare"
+  }
+}

@@ -1,0 +1,27 @@
+---
+/**
+ * CategoryNav — horizontal pill nav used above book grids.
+ * Skeleton: renders items with an `active` marker. Real filtering is done
+ * by emitting different links (e.g. /novels?category=male) once the list
+ * page is implemented.
+ */
+interface Props {
+  items: { key: string; label: string; href: string }[];
+  activeKey?: string;
+}
+
+const { items, activeKey } = Astro.props;
+---
+
+<nav class="category-nav" aria-label="category">
+  {
+    items.map((it) => (
+      <a
+        class:list={['category-nav__item', it.key === activeKey && 'active']}
+        href={it.href}
+      >
+        {it.label}
+      </a>
+    ))
+  }
+</nav>

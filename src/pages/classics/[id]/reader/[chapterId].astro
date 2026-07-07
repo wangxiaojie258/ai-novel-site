@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Reader from '../../../../components/Reader.astro';
+import CommentSection from '../../../../components/CommentSection.astro';
+import { resolveLocale } from '../../../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const { id, chapterId } = Astro.params;
+const numMatch = (chapterId ?? '').match(/(\d+)/);
+const num = numMatch ? Number(numMatch[1]) : 1;
+const prevId = num > 1 ? `ch-${num - 1}` : null;
+const nextId = `ch-${num + 1}`;
+
+const chapter = {
+  id: chapterId ?? 'ch-1',
+  number: num,
+  title: `第 ${num} 回`,
+  contentHtml: '<p>且说当日荣府正是春深时节，凤姐儿正在房中与平儿说话，忽闻外头一声报说……</p><p>（此处为经典名著的演示段落，正式版将从 chapters 内容集合读取。）</p>',
+  wordCount: 7200,
+  publishDate: new Date('1791-01-01'),
+};
+
+const bookHref = `/classics/${id}`;
+const prevHref = prevId ? `/classics/${id}/reader/${prevId}` : undefined;
+const nextHref = `/classics/${id}/reader/${nextId}`;
+---
+
+<BaseLayout title={chapter.title}>
+  <Reader
+    bookTitle="红楼梦"
+    bookHref={bookHref}
+    chapter={chapter}
+    prevHref={prevHref}
+    nextHref={nextHref}
+    locale={locale}
+  />
+  <div class="container">
+    <CommentSection
+      comments={[]}
+      targetType="chapter"
+      targetId={chapter.id}
+      locale={locale}
+      loginRequired
+    />
+  </div>
+</BaseLayout>

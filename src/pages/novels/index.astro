@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookGrid from '../../components/BookGrid.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import { resolveLocale, t } from '../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const params = Astro.url.searchParams;
+const activeCategory = params.get('category') ?? '';
+const activeStatus = params.get('status') ?? '';
+
+const categories = [
+  { key: '', label: t(locale, 'novels.filters.category') + ': All', href: '/novels' },
+  { key: 'male', label: t(locale, 'novels.category.male'), href: '/novels?category=male' },
+  { key: 'female', label: t(locale, 'novels.category.female'), href: '/novels?category=female' },
+  { key: 'general', label: t(locale, 'novels.category.general'), href: '/novels?category=general' },
+];
+
+// Skeleton data — will be replaced by `getCollection('novels')`.
+const allBooks = [
+  { id: 'demo-novel-1', title: '雾港回声', author: 'gpt-4o', status: 'ongoing' as const, category: 'male' as const, chapterCount: 28, wordCount: 124_000, href: '/novels/demo-novel-1' },
+  { id: 'demo-novel-2', title: '薄荷与白塔', author: 'claude-3.5', status: 'ongoing' as const, category: 'female' as const, chapterCount: 16, wordCount: 78_500, href: '/novels/demo-novel-2' },
+  { id: 'demo-novel-3', title: '云上的工程师', author: 'deepseek-v3', status: 'completed' as const, category: 'general' as const, chapterCount: 42, wordCount: 196_300, href: '/novels/demo-novel-3' },
+];
+
+const filtered = allBooks.filter((b) => {
+  if (activeCategory && b.category !== activeCategory) return false;
+  if (activeStatus && b.status !== activeStatus) return false;
+  return true;
+});
+---
+
+<BaseLayout title={t(locale, 'novels.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'novels.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'novels.subtitle')}</p>
+    <CategoryNav items={categories} activeKey={activeCategory} />
+    <BookGrid books={filtered} locale={locale} variant="novel" emptyText="No novels match the filters yet." />
+  </div>
+</BaseLayout>

@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ChapterList from '../../../components/ChapterList.astro';
+import CommentSection from '../../../components/CommentSection.astro';
+import { resolveLocale, t } from '../../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const { id } = Astro.params;
+
+// Skeleton data; real implementation pulls from `getCollection('novels')`.
+const novel = {
+  id: id ?? 'demo-novel-1',
+  title: '雾港回声',
+  author: 'gpt-4o',
+  aiModel: 'gpt-4o',
+  category: 'male' as const,
+  subcategory: '都市奇幻',
+  status: 'ongoing' as const,
+  wordCount: 124_000,
+  chapterCount: 28,
+  tags: ['雾港', '悬疑', 'AI 协作'],
+  excerpt: '在 AI 写就的雾港里，一段记忆正被反复重写……',
+  promptPreview: '你是一位擅长都市悬疑的 AI 作家……',
+  publishDate: new Date('2026-04-12'),
+  updateDate: new Date('2026-07-01'),
+};
+
+const chapters = Array.from({ length: novel.chapterCount }, (_, i) => ({
+  id: `ch-${i + 1}`,
+  number: i + 1,
+  title: `第 ${i + 1} 章 · 雾中的名字`,
+  wordCount: 4000 + (i % 5) * 800,
+  publishDate: novel.publishDate,
+  href: `/novels/${novel.id}/reader/ch-${i + 1}`,
+}));
+---
+
+<BaseLayout title={novel.title} description={novel.excerpt}>
+  <article class="page">
+    <header>
+      <h1 class="page__title">{novel.title}</h1>
+      <p class="page__subtitle text-muted">
+        {t(locale, 'book.author')}: {novel.author} · {t(locale, 'book.aiModel')}: {novel.aiModel} · {t(locale, 'book.status')}: {t(locale, `novels.status.${novel.status}`)}
+      </p>
+    </header>
+
+    <section class="mt-2">
+      <h2 class="text-muted">{t(locale, 'book.excerpt')}</h2>
+      <p>{novel.excerpt}</p>
+    </section>
+
+    <section>
+      <h2 class="text-muted">{t(locale, 'book.tags')}</h2>
+      <p>{novel.tags.join('、')}</p>
+    </section>
+
+    <section>
+      <h2 class="text-muted">{t(locale, 'book.promptPreview')}</h2>
+      <pre class="text-muted" style="white-space: pre-wrap;">{novel.promptPreview}</pre>
+    </section>
+
+    <div class="mt-2 mb-2 flex gap-1">
+      <a href={chapters[0]?.href ?? '#'}><button class="primary" type="button">{t(locale, 'book.startReading')}</button></a>
+      <button type="button" data-reward-open={`reward-${novel.id}`}>{t(locale, 'book.reward')}</button>
+    </div>
+
+    <h2 class="text-muted">{t(locale, 'book.chapters')}</h2>
+    <ChapterList chapters={chapters} locale={locale} />
+
+    <CommentSection
+      comments={[]}
+      targetType="book"
+      targetId={novel.id}
+      locale={locale}
+      loginRequired
+    />
+  </article>
+
+  <script define:vars={{ novelId: novel.id }}>
+    // Reward modal hook placeholder — RewardModal can be rendered conditionally
+    // from the page when the user clicks the button. Real impl loads it.
+    document.querySelectorAll('[data-reward-open]').forEach((el) => {
+      el.addEventListener('click', () => {
+        window.dispatchEvent(new CustomEvent('open-reward', { detail: { bookId: novelId } }));
+      });
+    });
+  </script>
+</BaseLayout>

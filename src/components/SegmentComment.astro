@@ -1,0 +1,23 @@
+---
+/**
+ * SegmentComment — small bubble attached to a paragraph for paragraph-level
+ * (段评) comments. The skeleton renders the bubble with a count badge; the
+ * actual popover with the thread is added via client JS later.
+ */
+interface Props {
+  segmentId: string;
+  count?: number;
+}
+
+const { segmentId, count = 0 } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['segment-comment', count > 0 && 'segment-comment--has']}
+  data-segment-id={segmentId}
+  data-segment-comment
+  aria-label={`${count} comments`}
+>
+  {count > 0 ? count : '+'}
+</button>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /bookshelf
+
+Sitemap: https://ai-novel.example.com/sitemap-index.xml

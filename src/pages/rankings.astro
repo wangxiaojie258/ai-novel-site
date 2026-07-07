@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+import { resolveLocale, t } from '../i18n';
+import { getBoard, type RankWindow, type RankMetric } from '../lib/rank';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const db = (Astro.locals as { runtime?: { env?: { DB?: unknown } } }).runtime?.env?.DB ?? null;
+const window = (Astro.url.searchParams.get('window') as RankWindow) ?? 'day';
+const metric = (Astro.url.searchParams.get('metric') as RankMetric) ?? 'reads';
+
+const board = await getBoard(db as never, window, metric, 20);
+
+const windows: { key: RankWindow; label: string }[] = [
+  { key: 'day', label: '日榜' },
+  { key: 'week', label: '周榜' },
+  { key: 'month', label: '月榜' },
+  { key: 'all', label: '总榜' },
+];
+
+const metrics: { key: RankMetric; label: string }[] = [
+  { key: 'reads', label: '阅读' },
+  { key: 'rewards', label: '打赏' },
+  { key: 'comments', label: '评论' },
+  { key: 'bookmarks', label: '收藏' },
+];
+---
+
+<BaseLayout title={t(locale, 'rankings.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'rankings.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'rankings.subtitle')}</p>
+
+    <CategoryNav
+      items={windows.map((w) => ({ key: w.key, label: w.label, href: `/rankings?window=${w.key}&metric=${metric}` }))}
+      activeKey={window}
+    />
+    <CategoryNav
+      items={metrics.map((m) => ({ key: m.key, label: m.label, href: `/rankings?window=${window}&metric=${m.key}` }))}
+      activeKey={metric}
+    />
+
+    {
+      board.entries.length === 0 ? (
+        <div class="empty-state">榜单数据生成中……</div>
+      ) : (
+        <ol class="chapter-list" style="margin-top: 1rem;">
+          {board.entries.map((e) => (
+            <li class="chapter-list__item">
+              <span>
+                <strong>#{e.rank}</strong> · <a href={`/novels/${e.bookId}`}>{e.title}</a>
+                <span class="text-muted"> · {e.author}</span>
+              </span>
+              <span class="chapter-list__meta">{e.score}</span>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+
+    <p class="text-muted" style="margin-top: 1.5rem; font-size: 0.85rem;">
+      数据更新于 {new Date(board.generatedAt).toLocaleString(locale === 'zh' ? 'zh-CN' : 'en-US')}
+    </p>
+  </div>
+</BaseLayout>

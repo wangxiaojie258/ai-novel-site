@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookGrid from '../components/BookGrid.astro';
+import { resolveLocale, t } from '../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+
+// Skeleton: assume no logged-in user. Once auth is wired, check session.
+const loggedIn = false;
+
+const books = loggedIn
+  ? [
+      { id: 'demo-novel-1', title: '雾港回声', author: 'gpt-4o', status: 'ongoing' as const, category: 'male' as const, chapterCount: 28, wordCount: 124_000, href: '/novels/demo-novel-1' },
+    ]
+  : [];
+---
+
+<BaseLayout title={t(locale, 'bookshelf.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'bookshelf.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'bookshelf.subtitle')}</p>
+
+    {
+      !loggedIn ? (
+        <div class="empty-state">
+          <p>{t(locale, 'bookshelf.loginRequired')}</p>
+          <a href="/api/auth" class="mt-2"><button class="primary" type="button">{t(locale, 'auth.login')}</button></a>
+        </div>
+      ) : (
+        <BookGrid books={books} locale={locale} variant="novel" emptyText="书架空空如也，去发现点好书吧。" />
+      )
+    }
+  </div>
+</BaseLayout>

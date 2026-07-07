@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a1a1a"/>
+      <stop offset="1" stop-color="#3a1a1a"/>
+    </linearGradient>
+    <linearGradient id="book" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c0392b"/>
+      <stop offset="1" stop-color="#7b241c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g transform="translate(120,140)">
+    <rect width="240" height="320" rx="12" fill="url(#book)"/>
+    <rect x="20" y="30" width="200" height="3" fill="#f4ecd8"/>
+    <rect x="20" y="50" width="160" height="3" fill="#f4ecd8"/>
+    <rect x="20" y="70" width="180" height="3" fill="#f4ecd8"/>
+    <rect x="20" y="90" width="120" height="3" fill="#f4ecd8"/>
+    <text x="120" y="240" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#f4ecd8">AI</text>
+  </g>
+  <g transform="translate(420,200)" fill="#f4ecd8" font-family="Georgia, serif">
+    <text x="0" y="0" font-size="68" font-weight="700">AI Novel Site</text>
+    <text x="0" y="80" font-size="28" fill="#d6c8a3">AI web-novels · Classics reimagined</text>
+    <text x="0" y="140" font-size="22" fill="#9ca3af">Read · Comment · Reward</text>
+  </g>
+</svg>

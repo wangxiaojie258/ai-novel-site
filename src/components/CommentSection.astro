@@ -1,0 +1,58 @@
+---
+/**
+ * CommentSection — top-level comment thread for a book/chapter.
+ * Renders existing comments + a form. The form is non-functional in the
+ * skeleton state; it posts to /api/comment (Workers route) when wired up.
+ */
+import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
+
+export interface CommentItem {
+  id: string;
+  author: string;
+  content: string;
+  createdAt: Date | string;
+}
+
+interface Props {
+  comments: CommentItem[];
+  targetType: 'novel' | 'classic' | 'chapter' | 'book';
+  targetId: string;
+  locale?: Locale;
+  loginRequired?: boolean;
+}
+
+const { comments, targetType, targetId, locale = DEFAULT_LOCALE, loginRequired = false } = Astro.props;
+---
+
+<section class="comment-section" data-target-type={targetType} data-target-id={targetId}>
+  <form class="comment-form" data-comment-form>
+    <textarea
+      name="content"
+      placeholder={loginRequired ? t(locale, 'comment.loginRequired') : t(locale, 'comment.placeholder')}
+      disabled={loginRequired}
+      required
+    />
+    <button type="submit" class="primary" disabled={loginRequired}>{t(locale, 'comment.submit')}</button>
+  </form>
+
+  {
+    comments.length === 0 ? (
+      <div class="empty-state text-muted">{t(locale, 'comment.noComments')}</div>
+    ) : (
+      <ul class="comment-list">
+        {comments.map((c) => {
+          const d = typeof c.createdAt === 'string' ? new Date(c.createdAt) : c.createdAt;
+          return (
+            <li class="comment">
+              <div class="comment__header">
+                <span class="comment__author">{c.author}</span>
+                <span>· {d.toLocaleString(locale === 'zh' ? 'zh-CN' : 'en-US')}</span>
+              </div>
+              <div class="comment__body">{c.content}</div>
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+</section>

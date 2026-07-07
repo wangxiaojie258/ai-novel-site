@@ -1,0 +1,55 @@
+---
+/**
+ * BookCard — skeleton component for rendering a single book (novel / classic).
+ * All data is passed in via props; no collection lookup here so it can be reused
+ * for both AI novels and classics.
+ */
+import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
+
+export interface BookCardData {
+  id: string;
+  title: string;
+  author: string;
+  cover?: string | undefined;
+  status?: 'ongoing' | 'completed' | undefined;
+  category?: 'male' | 'female' | 'general' | string | undefined;
+  wordCount?: number | undefined;
+  chapterCount?: number | undefined;
+  href: string;
+}
+
+interface Props {
+  book: BookCardData;
+  locale?: Locale;
+  variant?: 'novel' | 'classic';
+}
+
+const { book, locale = DEFAULT_LOCALE, variant = 'novel' } = Astro.props;
+
+const statusLabel = book.status ? t(locale, `novels.status.${book.status}`) : '';
+const statusClass = book.status ? `book-card__badge--${book.status}` : '';
+---
+
+<a class="book-card" href={book.href}>
+  <div class="book-card__cover">
+    {
+      book.cover ? (
+        <img src={book.cover} alt={book.title} loading="lazy" />
+      ) : (
+        <span>{book.title}</span>
+      )
+    }
+  </div>
+  <div class="book-card__body">
+    <div class="book-card__title">{book.title}</div>
+    <div class="book-card__meta">
+      <span>{t(locale, 'book.author')}: {book.author}</span>
+    </div>
+    <div class="book-card__meta">
+      {book.chapterCount !== undefined && <span>{t(locale, 'book.chapterCount')}: {book.chapterCount}</span>}
+      {book.wordCount !== undefined && <span>{t(locale, 'book.wordCount')}: {book.wordCount.toLocaleString()}</span>}
+    </div>
+    {statusLabel && <span class={`book-card__badge ${statusClass}`}>{statusLabel}</span>}
+    {variant === 'novel' && book.category && <span class="book-card__badge">{t(locale, `novels.category.${book.category}`)}</span>}
+  </div>
+</a>

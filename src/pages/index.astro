@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookGrid from '../components/BookGrid.astro';
+import { resolveLocale, t } from '../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const featured = [
+  {
+    id: 'demo-novel-1',
+    title: '雾港回声',
+    author: 'gpt-4o',
+    cover: undefined,
+    status: 'ongoing' as const,
+    category: 'male' as const,
+    chapterCount: 28,
+    wordCount: 124_000,
+    href: '/novels/demo-novel-1',
+  },
+  {
+    id: 'demo-novel-2',
+    title: '薄荷与白塔',
+    author: 'claude-3.5',
+    cover: undefined,
+    status: 'ongoing' as const,
+    category: 'female' as const,
+    chapterCount: 16,
+    wordCount: 78_500,
+    href: '/novels/demo-novel-2',
+  },
+];
+
+const classics = [
+  {
+    id: 'demo-classic-1',
+    title: '红楼梦',
+    author: '曹雪芹',
+    cover: undefined,
+    chapterCount: 120,
+    wordCount: 730_000,
+    href: '/classics/demo-classic-1',
+  },
+];
+---
+
+<BaseLayout title={t(locale, 'site.name')} description={t(locale, 'site.tagline')}>
+  <section class="hero">
+    <h1>{t(locale, 'home.heroTitle')}</h1>
+    <p>{t(locale, 'home.heroSubtitle')}</p>
+    <div class="hero__actions">
+      <a href="/novels"><button class="primary" type="button">{t(locale, 'home.exploreNovels')}</button></a>
+      <a href="/classics"><button type="button">{t(locale, 'home.exploreClassics')}</button></a>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>{t(locale, 'novels.title')}</h2>
+      <a href="/novels">查看全部 →</a>
+    </div>
+    <BookGrid books={featured} locale={locale} variant="novel" />
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>{t(locale, 'classics.title')}</h2>
+      <a href="/classics">查看全部 →</a>
+    </div>
+    <BookGrid books={classics} locale={locale} variant="classic" />
+  </section>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+/**
+ * BookGrid — responsive grid container for BookCard items.
+ * Skeleton only; pagination/filtering will be added later.
+ */
+import BookCard, { type BookCardData } from './BookCard.astro';
+import { DEFAULT_LOCALE, type Locale } from '../i18n';
+
+interface Props {
+  books: BookCardData[];
+  locale?: Locale;
+  variant?: 'novel' | 'classic';
+  emptyText?: string;
+}
+
+const { books, locale = DEFAULT_LOCALE, variant = 'novel', emptyText } = Astro.props;
+---
+
+{
+  books.length === 0 ? (
+    <div class="empty-state">{emptyText ?? 'No books yet.'}</div>
+  ) : (
+    <div class="book-grid">
+      {books.map((book) => (
+        <BookCard book={book} locale={locale} variant={variant} />
+      ))}
+    </div>
+  )
+}

@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Reader from '../../../../components/Reader.astro';
+import CommentSection from '../../../../components/CommentSection.astro';
+import { resolveLocale } from '../../../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const { id, chapterId } = Astro.params;
+const numMatch = (chapterId ?? '').match(/(\d+)/);
+const num = numMatch ? Number(numMatch[1]) : 1;
+const prevId = num > 1 ? `ch-${num - 1}` : null;
+const nextId = `ch-${num + 1}`;
+
+// Skeleton chapter — real impl loads from `getCollection('chapters')`.
+const chapter = {
+  id: chapterId ?? 'ch-1',
+  number: num,
+  title: `第 ${num} 章 · 雾中的名字`,
+  contentHtml: `
+    <p>在 AI 写就的雾港里，一段记忆正被反复重写。每当潮汐退去，街道会浮现出另一层轮廓——那是无数个故事在等待被命名。</p>
+    <p>读者们沿着旧灯塔的方向走去，听见海面在低语。这里没有真正的结局，只有一行行被模型续写的晚霞。</p>
+    <p>这是一段由人类与 AI 共同雕琢的章节，等待你留下第一段评注。</p>
+  `,
+  wordCount: 4521,
+  publishDate: new Date('2026-05-01'),
+};
+
+const bookHref = `/novels/${id}`;
+const prevHref = prevId ? `/novels/${id}/reader/${prevId}` : undefined;
+const nextHref = `/novels/${id}/reader/${nextId}`;
+---
+
+<BaseLayout title={chapter.title}>
+  <Reader
+    bookTitle="雾港回声"
+    bookHref={bookHref}
+    chapter={chapter}
+    prevHref={prevHref}
+    nextHref={nextHref}
+    locale={locale}
+  />
+  <div class="container">
+    <CommentSection
+      comments={[]}
+      targetType="chapter"
+      targetId={chapter.id}
+      locale={locale}
+      loginRequired
+    />
+  </div>
+</BaseLayout>

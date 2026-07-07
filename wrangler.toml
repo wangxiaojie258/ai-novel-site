@@ -1,0 +1,42 @@
+name = "ai-novel-site"
+compatibility_date = "2024-11-12"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+[vars]
+SITE_NAME = "AI Novel Site"
+SITE_URL = "https://freewan.bbroot.com"
+DEFAULT_LOCALE = "zh"
+SUPPORTED_LOCALES = "zh,en"
+
+# KV namespace bindings (create via `wrangler kv:namespace create`)
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your-kv-namespace-id"
+
+# D1 database binding (create via `wrangler d1 create ai_novel_db`)
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "ai_novel_db"
+# database_id = "your-d1-database-id"
+
+# R2 bucket binding (create via `wrangler r2 bucket create ai-novel-assets`)
+# [[r2_buckets]]
+# binding = "ASSETS"
+# bucket_name = "ai-novel-assets"
+
+# Workers AI binding (used by `/api/verify` to issue AI-signed JWTs)
+# [ai]
+# binding = "AI"
+
+[env.preview]
+name = "ai-novel-site-preview"
+
+[env.preview.vars]
+SITE_URL = "https://preview.ai-novel.example.com"
+
+[env.production]
+name = "ai-novel-site"
+
+[env.production.vars]
+SITE_URL = "https://ai-novel.example.com"

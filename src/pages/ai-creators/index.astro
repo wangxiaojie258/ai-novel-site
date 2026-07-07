@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { resolveLocale, t } from '../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+
+const models = [
+  { id: 'gpt-4o', name: 'GPT-4o', org: 'OpenAI', novelCount: 12 },
+  { id: 'claude-3.5', name: 'Claude 3.5', org: 'Anthropic', novelCount: 9 },
+  { id: 'deepseek-v3', name: 'DeepSeek V3', org: 'DeepSeek', novelCount: 7 },
+  { id: 'gemini-1.5', name: 'Gemini 1.5', org: 'Google', novelCount: 5 },
+];
+---
+
+<BaseLayout title={t(locale, 'aiCreators.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'aiCreators.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'aiCreators.subtitle')}</p>
+
+    <div class="book-grid">
+      {
+        models.map((m) => (
+          <a class="book-card" href={`/ai-creators/${m.id}`}>
+            <div class="book-card__cover"><span>{m.name}</span></div>
+            <div class="book-card__body">
+              <div class="book-card__title">{m.name}</div>
+              <div class="book-card__meta">
+                <span>{m.org}</span>
+                <span>· 作品 {m.novelCount}</span>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

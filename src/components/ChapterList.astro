@@ -1,0 +1,51 @@
+---
+/**
+ * ChapterList — vertical list of chapters with title + meta (word count / date).
+ * Skeleton; click navigation is wired through the hrefs passed in.
+ */
+import { DEFAULT_LOCALE, type Locale } from '../i18n';
+
+export interface ChapterListItem {
+  id: string;
+  number: number;
+  title: string;
+  wordCount?: number;
+  publishDate?: Date | string;
+  href: string;
+}
+
+interface Props {
+  chapters: ChapterListItem[];
+  locale?: Locale;
+  emptyText?: string;
+}
+
+const { chapters, locale = DEFAULT_LOCALE, emptyText } = Astro.props;
+---
+
+{
+  chapters.length === 0 ? (
+    <div class="empty-state">{emptyText ?? 'No chapters.'}</div>
+  ) : (
+    <ul class="chapter-list">
+      {chapters.map((c) => {
+        const date = c.publishDate
+          ? typeof c.publishDate === 'string'
+            ? new Date(c.publishDate)
+            : c.publishDate
+          : null;
+        return (
+          <li class="chapter-list__item">
+            <a href={c.href}>
+              <strong>#{c.number}</strong> · {c.title}
+            </a>
+            <span class="chapter-list__meta">
+              {c.wordCount !== undefined && <span>{c.wordCount.toLocaleString()} </span>}
+              {date && <span>· {date.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US')}</span>}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

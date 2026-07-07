@@ -1,0 +1,117 @@
+---
+/**
+ * Reader — reading view skeleton.
+ * Renders chapter content, exposes a control panel (theme / font size / chapter list)
+ * and a bottom navigation bar (prev/next). The actual logic is wired up later via
+ * client-side scripts consuming these element IDs / data-attrs.
+ */
+import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
+
+export interface ReaderChapter {
+  id: string;
+  number: number;
+  title: string;
+  contentHtml: string;
+  wordCount?: number;
+  publishDate?: Date | string;
+}
+
+interface Props {
+  bookTitle: string;
+  bookHref: string;
+  chapter: ReaderChapter;
+  prevHref?: string;
+  nextHref?: string;
+  locale?: Locale;
+}
+
+const { bookTitle, bookHref, chapter, prevHref, nextHref, locale = DEFAULT_LOCALE } = Astro.props;
+const published = chapter.publishDate
+  ? typeof chapter.publishDate === 'string'
+    ? new Date(chapter.publishDate)
+    : chapter.publishDate
+  : null;
+---
+
+<article class="reader reader--light" id="reader-root" data-reader-root>
+  <header class="reader__head text-center">
+    <a href={bookHref} class="text-muted">{bookTitle}</a>
+    <h1 class="reader__title">{chapter.title}</h1>
+    <div class="reader__meta">
+      <span>{t(locale, 'reader.chapterList')} #{chapter.number}</span>
+      {
+        published && (
+          <span>
+            · {published.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US')}
+          </span>
+        )
+      }
+      {chapter.wordCount !== undefined && <span>· {chapter.wordCount.toLocaleString()} {t(locale, 'book.wordCount')}</span>}
+    </div>
+  </header>
+
+  <div class="reader__body" data-reader-body set:html={chapter.contentHtml} />
+
+  <nav class="reader__nav" aria-label="chapter-nav">
+    {
+      prevHref ? (
+        <a href={prevHref}>
+          <button type="button">← {t(locale, 'reader.prevChapter')}</button>
+        </a>
+      ) : (
+        <span />
+      )
+    }
+    {
+      nextHref ? (
+        <a href={nextHref}>
+          <button type="button">{t(locale, 'reader.nextChapter')} →</button>
+        </a>
+      ) : (
+        <span />
+      )
+    }
+  </nav>
+
+  <aside class="reader__controls" aria-label="reader-controls">
+    <button type="button" data-reader-theme="light" title={t(locale, 'reader.themeLight')}>☀</button>
+    <button type="button" data-reader-theme="sepia" title={t(locale, 'reader.themeSepia')}>☕</button>
+    <button type="button" data-reader-theme="dark" title={t(locale, 'reader.themeDark')}>☾</button>
+    <button type="button" data-reader-font="-" title={t(locale, 'reader.fontSmaller')}>A-</button>
+    <button type="button" data-reader-font="+" title={t(locale, 'reader.fontLarger')}>A+</button>
+  </aside>
+</article>
+
+<script>
+  // Minimal client wiring: theme + font size persisted in localStorage.
+  // Later iterations can add chapter-list drawer, segment comments, etc.
+  type Theme = 'light' | 'sepia' | 'dark';
+  const root = document.querySelector<HTMLElement>('[data-reader-root]');
+  if (root) {
+    const saved = (localStorage.getItem('reader:theme') as Theme | null) ?? 'light';
+    root.classList.remove('reader--light', 'reader--sepia', 'reader--dark');
+    root.classList.add(`reader--${saved}`);
+
+    document.querySelectorAll<HTMLButtonElement>('[data-reader-theme]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const theme = btn.dataset.readerTheme as Theme;
+        root.classList.remove('reader--light', 'reader--sepia', 'reader--dark');
+        root.classList.add(`reader--${theme}`);
+        localStorage.setItem('reader:theme', theme);
+      });
+    });
+
+    const body = document.querySelector<HTMLElement>('[data-reader-body]');
+    let size = Number(localStorage.getItem('reader:fontSize') ?? '17');
+    if (body) body.style.fontSize = `${size}px`;
+    document.querySelectorAll<HTMLButtonElement>('[data-reader-font]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const op = btn.dataset.readerFont;
+        if (op === '+') size = Math.min(28, size + 1);
+        else if (op === '-') size = Math.max(13, size - 1);
+        if (body) body.style.fontSize = `${size}px`;
+        localStorage.setItem('reader:fontSize', String(size));
+      });
+    });
+  }
+</script>
