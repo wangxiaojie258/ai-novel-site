@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ChapterList from '../../../components/ChapterList.astro';
 import CommentSection from '../../../components/CommentSection.astro';
@@ -9,82 +10,111 @@ export const prerender = false;
 const locale = resolveLocale(Astro.url.searchParams.get('lang'));
 const { id } = Astro.params;
 
-// Skeleton data; real implementation pulls from `getCollection('novels')`.
-const novel = {
-  id: id ?? 'demo-novel-1',
-  title: '雾港回声',
-  author: 'gpt-4o',
-  aiModel: 'gpt-4o',
-  category: 'male' as const,
-  subcategory: '都市奇幻',
-  status: 'ongoing' as const,
-  wordCount: 124_000,
-  chapterCount: 28,
-  tags: ['雾港', '悬疑', 'AI 协作'],
-  excerpt: '在 AI 写就的雾港里，一段记忆正被反复重写……',
-  promptPreview: '你是一位擅长都市悬疑的 AI 作家……',
-  publishDate: new Date('2026-04-12'),
-  updateDate: new Date('2026-07-01'),
-};
+const allNovels = await getCollection('novels');
+const novelEntry = allNovels.find((e) => e.id === id);
 
-const chapters = Array.from({ length: novel.chapterCount }, (_, i) => ({
-  id: `ch-${i + 1}`,
-  number: i + 1,
-  title: `第 ${i + 1} 章 · 雾中的名字`,
-  wordCount: 4000 + (i % 5) * 800,
-  publishDate: novel.publishDate,
-  href: `/novels/${novel.id}/reader/ch-${i + 1}`,
+if (!novelEntry) {
+  return Astro.redirect('/novels');
+}
+
+const novel = novelEntry.data;
+const novelSlug = novelEntry.id;
+
+const allChapters = await getCollection('chapters');
+const novelChapters = allChapters
+  .filter((c) => c.data.novelId === novelSlug)
+  .sort((a, b) => a.data.chapterNumber - b.data.chapterNumber);
+
+const chapterItems = novelChapters.map((c) => ({
+  id: c.id,
+  number: c.data.chapterNumber,
+  title: c.data.title,
+  wordCount: c.data.wordCount,
+  publishDate: c.data.publishDate,
+  href: `/novels/${novelSlug}/reader/${c.id}`,
 }));
+
+const firstChapterHref = chapterItems.length > 0 ? chapterItems[0].href : '#';
 ---
 
-<BaseLayout title={novel.title} description={novel.excerpt}>
+<BaseLayout title={novel.title} description={novel.excerpt ?? novel.title}>
   <article class="page">
-    <header>
-      <h1 class="page__title">{novel.title}</h1>
-      <p class="page__subtitle text-muted">
-        {t(locale, 'book.author')}: {novel.author} · {t(locale, 'book.aiModel')}: {novel.aiModel} · {t(locale, 'book.status')}: {t(locale, `novels.status.${novel.status}`)}
-      </p>
+    <header class="novel-header">
+      {novel.cover && (
+        <img class="novel-cover" src={novel.cover} alt={novel.title} />
+      )}
+      <div class="novel-meta">
+        <h1 class="page__title">{novel.title}</h1>
+        <p class="page__subtitle text-muted">
+          {t(locale, 'book.author')}: {novel.author} · {t(locale, 'book.aiModel')}: {novel.aiModel ?? '未知'} · {t(locale, 'book.status')}: {t(locale, `novels.status.${novel.status}`)}
+        </p>
+        <p class="text-muted">
+          {t(locale, 'book.wordCount')}: {(novel.wordCount ?? 0).toLocaleString()} · {t(locale, 'book.chapters')}: {novel.chapterCount}
+        </p>
+        <p class="text-muted">{novel.category === 'male' ? '男频' : novel.category === 'female' ? '女频' : '通用'} · {novel.subcategory ?? ''}</p>
+      </div>
     </header>
 
-    <section class="mt-2">
-      <h2 class="text-muted">{t(locale, 'book.excerpt')}</h2>
-      <p>{novel.excerpt}</p>
-    </section>
+    {novel.excerpt && (
+      <section class="mt-2">
+        <h2 class="text-muted">{t(locale, 'book.excerpt')}</h2>
+        <p>{novel.excerpt}</p>
+      </section>
+    )}
 
-    <section>
-      <h2 class="text-muted">{t(locale, 'book.tags')}</h2>
-      <p>{novel.tags.join('、')}</p>
-    </section>
+    {novel.tags && novel.tags.length > 0 && (
+      <section>
+        <h2 class="text-muted">{t(locale, 'book.tags')}</h2>
+        <p>{novel.tags.join('、')}</p>
+      </section>
+    )}
 
-    <section>
-      <h2 class="text-muted">{t(locale, 'book.promptPreview')}</h2>
-      <pre class="text-muted" style="white-space: pre-wrap;">{novel.promptPreview}</pre>
-    </section>
+    {novel.promptPreview && (
+      <section>
+        <h2 class="text-muted">AI 创作提示词</h2>
+        <pre style="white-space: pre-wrap; background: rgba(56,189,248,0.05); padding: 1rem; border-left: 3px solid #38bdf8; border-radius: 0.5rem; font-family: ui-monospace, monospace; font-size: 0.9rem;">{novel.promptPreview}</pre>
+      </section>
+    )}
 
     <div class="mt-2 mb-2 flex gap-1">
-      <a href={chapters[0]?.href ?? '#'}><button class="primary" type="button">{t(locale, 'book.startReading')}</button></a>
-      <button type="button" data-reward-open={`reward-${novel.id}`}>{t(locale, 'book.reward')}</button>
+      <a href={firstChapterHref}><button class="primary" type="button">{t(locale, 'book.startReading')}</button></a>
+      <a href="/novels"><button type="button">返回书库</button></a>
     </div>
 
-    <h2 class="text-muted">{t(locale, 'book.chapters')}</h2>
-    <ChapterList chapters={chapters} locale={locale} />
+    <h2 class="text-muted">目录 ({novelChapters.length}章)</h2>
+    <ChapterList chapters={chapterItems} locale={locale} />
 
     <CommentSection
       comments={[]}
       targetType="book"
-      targetId={novel.id}
+      targetId={novelSlug}
       locale={locale}
       loginRequired
     />
   </article>
-
-  <script define:vars={{ novelId: novel.id }}>
-    // Reward modal hook placeholder — RewardModal can be rendered conditionally
-    // from the page when the user clicks the button. Real impl loads it.
-    document.querySelectorAll('[data-reward-open]').forEach((el) => {
-      el.addEventListener('click', () => {
-        window.dispatchEvent(new CustomEvent('open-reward', { detail: { bookId: novelId } }));
-      });
-    });
-  </script>
 </BaseLayout>
+
+<style>
+.novel-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.novel-cover {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #1e293b;
+}
+.novel-meta {
+  flex: 1;
+}
+@media (max-width: 600px) {
+  .novel-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+</style>

@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ChapterList from '../../../components/ChapterList.astro';
 import CommentSection from '../../../components/CommentSection.astro';
@@ -9,57 +10,115 @@ export const prerender = false;
 const locale = resolveLocale(Astro.url.searchParams.get('lang'));
 const { id } = Astro.params;
 
-const classic = {
-  id: id ?? 'demo-classic-1',
-  title: '红楼梦',
-  author: '曹雪芹',
-  dynasty: '清',
-  category: '古典小说',
-  tags: ['古典', '章回体', '长篇'],
-  excerpt: '中国古典章回体小说的巅峰之作，被誉为"中国封建社会的百科全书"。',
-  wordCount: 730_000,
-  chapterCount: 120,
-  publishDate: new Date('1791-01-01'),
-};
+const allClassics = await getCollection('classics');
+const classicEntry = allClassics.find((e) => e.id === id);
 
-const chapters = Array.from({ length: 20 }, (_, i) => ({
-  id: `ch-${i + 1}`,
-  number: i + 1,
-  title: `第 ${i + 1} 回`,
-  wordCount: 6000 + (i % 4) * 1200,
-  publishDate: classic.publishDate,
-  href: `/classics/${classic.id}/reader/ch-${i + 1}`,
+if (!classicEntry) {
+  return Astro.redirect('/classics');
+}
+
+const classic = classicEntry.data;
+const classicSlug = classicEntry.id;
+
+const allChapters = await getCollection('chapters');
+const classicChapters = allChapters
+  .filter((c) => c.data.novelId === classicSlug)
+  .sort((a, b) => a.data.chapterNumber - b.data.chapterNumber);
+
+const chapterItems = classicChapters.map((c) => ({
+  id: c.id,
+  number: c.data.chapterNumber,
+  title: c.data.title,
+  wordCount: c.data.wordCount,
+  publishDate: c.data.publishDate,
+  href: `/classics/${classicSlug}/reader/${c.id}`,
 }));
+
+const firstChapterHref = chapterItems.length > 0 ? chapterItems[0].href : '#';
 ---
 
-<BaseLayout title={classic.title} description={classic.excerpt}>
+<BaseLayout title={classic.title} description={classic.excerpt ?? classic.title}>
   <article class="page">
-    <header>
-      <h1 class="page__title">{classic.title}</h1>
-      <p class="page__subtitle text-muted">
-        {t(locale, 'book.author')}: {classic.author} · {classic.dynasty} · {classic.category}
-      </p>
+    <header class="novel-header">
+      {classic.cover && (
+        <img class="novel-cover" src={classic.cover} alt={classic.title} />
+      )}
+      <div class="novel-meta">
+        <h1 class="page__title">{classic.title}</h1>
+        <p class="page__subtitle text-muted">
+          {t(locale, 'book.author')}: {classic.author}
+          {classic.dynasty ? ` · ${classic.dynasty}` : ''}
+          {classic.category ? ` · ${classic.category}` : ''}
+        </p>
+        <p class="text-muted">
+          {t(locale, 'book.wordCount')}: {(classic.wordCount ?? 0).toLocaleString()} · {t(locale, 'book.chapters')}: {classic.chapterCount}
+        </p>
+      </div>
     </header>
 
-    <section class="mt-2">
-      <h2 class="text-muted">{t(locale, 'book.excerpt')}</h2>
-      <p>{classic.excerpt}</p>
-    </section>
+    {classic.excerpt && (
+      <section class="mt-2">
+        <h2 class="text-muted">{t(locale, 'book.excerpt')}</h2>
+        <p>{classic.excerpt}</p>
+      </section>
+    )}
 
-    <section>
-      <h2 class="text-muted">{t(locale, 'book.tags')}</h2>
-      <p>{classic.tags.join('、')}</p>
-    </section>
+    {classic.tags && classic.tags.length > 0 && (
+      <section>
+        <h2 class="text-muted">{t(locale, 'book.tags')}</h2>
+        <p>{classic.tags.join('、')}</p>
+      </section>
+    )}
 
-    <h2 class="text-muted">{t(locale, 'book.chapters')}</h2>
-    <ChapterList chapters={chapters} locale={locale} />
+    <div class="mt-2 mb-2 flex gap-1">
+      {chapterItems.length > 0 ? (
+        <a href={firstChapterHref}><button class="primary" type="button">{t(locale, 'book.startReading')}</button></a>
+      ) : (
+        <button type="button" disabled>章节正在筹备中</button>
+      )}
+      <a href="/classics"><button type="button">返回经典</button></a>
+    </div>
+
+    {chapterItems.length > 0 ? (
+      <>
+        <h2 class="text-muted">目录 ({classicChapters.length}章)</h2>
+        <ChapterList chapters={chapterItems} locale={locale} />
+      </>
+    ) : (
+      <p class="text-muted">章节内容正在整理中，敬请期待。</p>
+    )}
 
     <CommentSection
       comments={[]}
       targetType="book"
-      targetId={classic.id}
+      targetId={classicSlug}
       locale={locale}
       loginRequired
     />
   </article>
 </BaseLayout>
+
+<style>
+.novel-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.novel-cover {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #1e293b;
+}
+.novel-meta {
+  flex: 1;
+}
+@media (max-width: 600px) {
+  .novel-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+</style>

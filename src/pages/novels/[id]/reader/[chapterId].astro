@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Reader from '../../../../components/Reader.astro';
 import CommentSection from '../../../../components/CommentSection.astro';
@@ -8,35 +9,57 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.url.searchParams.get('lang'));
 const { id, chapterId } = Astro.params;
-const numMatch = (chapterId ?? '').match(/(\d+)/);
-const num = numMatch ? Number(numMatch[1]) : 1;
-const prevId = num > 1 ? `ch-${num - 1}` : null;
-const nextId = `ch-${num + 1}`;
 
-// Skeleton chapter — real impl loads from `getCollection('chapters')`.
-const chapter = {
-  id: chapterId ?? 'ch-1',
-  number: num,
-  title: `第 ${num} 章 · 雾中的名字`,
-  contentHtml: `
-    <p>在 AI 写就的雾港里，一段记忆正被反复重写。每当潮汐退去，街道会浮现出另一层轮廓——那是无数个故事在等待被命名。</p>
-    <p>读者们沿着旧灯塔的方向走去，听见海面在低语。这里没有真正的结局，只有一行行被模型续写的晚霞。</p>
-    <p>这是一段由人类与 AI 共同雕琢的章节，等待你留下第一段评注。</p>
-  `,
-  wordCount: 4521,
-  publishDate: new Date('2026-05-01'),
-};
+const allNovels = await getCollection('novels');
+const novelEntry = allNovels.find((e) => e.id === id);
+
+const allChapters = await getCollection('chapters');
+const chapterEntry = allChapters.find((c) => c.id === chapterId);
+
+if (!chapterEntry || !novelEntry) {
+  return Astro.redirect(`/novels/${id}`);
+}
+
+const novel = novelEntry.data;
+const chapter = chapterEntry;
+
+const novelChapters = allChapters
+  .filter((c) => c.data.novelId === id)
+  .sort((a, b) => a.data.chapterNumber - b.data.chapterNumber);
+
+const curIdx = novelChapters.findIndex((c) => c.id === chapterId);
+const prevCh = curIdx > 0 ? novelChapters[curIdx - 1] : null;
+const nextCh = curIdx < novelChapters.length - 1 ? novelChapters[curIdx + 1] : null;
 
 const bookHref = `/novels/${id}`;
-const prevHref = prevId ? `/novels/${id}/reader/${prevId}` : undefined;
-const nextHref = `/novels/${id}/reader/${nextId}`;
+const prevHref = prevCh ? `/novels/${id}/reader/${prevCh.id}` : undefined;
+const nextHref = nextCh ? `/novels/${id}/reader/${nextCh.id}` : undefined;
+
+const chapterData = {
+  id: chapterId,
+  number: chapter.data.chapterNumber,
+  title: chapter.data.title,
+  contentHtml: chapter.body
+    ? chapter.body
+        .replace(/^---[\s\S]*?---/, '')
+        .replace(/^#\s+.*$/gm, '')
+        .trim()
+        .split(/\n\n+/)
+        .map((p) => p.startsWith('<') ? p : `<p>${p.trim()}</p>`)
+        .join('\n')
+    : '<p>章节内容为空</p>',
+  wordCount: chapter.data.wordCount ?? 0,
+  publishDate: chapter.data.publishDate ? new Date(chapter.data.publishDate) : new Date(),
+};
+
+const bookTitle = novel.title;
 ---
 
-<BaseLayout title={chapter.title}>
+<BaseLayout title={`${chapterData.title} - ${bookTitle}`}>
   <Reader
-    bookTitle="雾港回声"
+    bookTitle={bookTitle}
     bookHref={bookHref}
-    chapter={chapter}
+    chapter={chapterData}
     prevHref={prevHref}
     nextHref={nextHref}
     locale={locale}
@@ -45,7 +68,7 @@ const nextHref = `/novels/${id}/reader/${nextId}`;
     <CommentSection
       comments={[]}
       targetType="chapter"
-      targetId={chapter.id}
+      targetId={chapterId}
       locale={locale}
       loginRequired
     />
