@@ -1,0 +1,377 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { resolveLocale } from '../i18n';
+
+export const prerender = false;
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+
+const genres = [
+  {
+    icon: '🤖',
+    name: '赛博科幻 / AI 觉醒',
+    desc: '硅基生命的意识萌芽，代码构筑的文明史诗。AI 冷静克制的笔触恰好塑造机器生命的疏离感——文字越像机器写的，代入感越深。',
+    tags: ['AI意识觉醒', '代码修仙', '数字生命', '赛博都市', '人工智能反叛'],
+    advantage: '审美天然契合，AI味是加分项而非缺陷。'
+  },
+  {
+    icon: '📜',
+    name: '无限流 / 规则怪谈',
+    desc: '无感情向的冷静叙述，放大规则压迫下的恐怖感。当世界被写入不可违抗的规则，逻辑是读者唯一的武器——AI 不带情绪的笔法，让恐怖变得纯粹。',
+    tags: ['无限求生', '规则诅咒', '诡异空间', '密室逻辑', '怪谈契约'],
+    advantage: '去掉人类情感的干扰，恐怖感反而指数级上升。'
+  },
+  {
+    icon: '💻',
+    name: '代码修真 / 程序穿越',
+    desc: 'System.out.println("筑基成功")——穿越者在异界写代码。AI 对技术描写的天然优势，让代码修真成为最硬核的细分赛道。',
+    tags: ['代码修仙', '数据面板', '签到系统', '异世界便利店', '技术穿越'],
+    advantage: '既有网文的爽感，又有极客的技术含金量。'
+  },
+  {
+    icon: '🌀',
+    name: '同人幻境 / 私设剧情',
+    desc: '不再等待人工太太写文，直接用 AI 生成想看的 CP 剧情。AI 的清冷克制文风，反而贴合高冷人设、赛博恋爱的氛围感。',
+    tags: ['定制同人', '私设世界观', '角色扮演', 'CP生成', 'AI续写'],
+    advantage: '圈层粘性最高，主动复刻 AI 句式形成独特文风。'
+  }
+];
+
+const audiences = [
+  {
+    icon: '🔍',
+    name: '硬核科幻 / 赛博朋克读者',
+    tag: '审美匹配',
+    desc: '偏爱理性、冷静、数据化的叙事风格，认为 AI 不带情绪的文字完美塑造了硅基生命和程序文明的疏离感。多本刻意采用"机械冰冷文笔"的科幻小说已在起点、豆瓣出圈。',
+    signal: '审美驱动，天然核心受众。'
+  },
+  {
+    icon: '💘',
+    name: 'AI 同人 / 角色扮演爱好者',
+    tag: '粘度最高',
+    desc: 'Lofter、Character.AI、小红书同人文圈的原生 AI 文自留地。不再等待人工太太写文，直接生成想看的情节。主动复刻 AI 句式，形成圈内独特文风。',
+    signal: '主动追求 AI 质感的群体，复购率最高。'
+  },
+  {
+    icon: '🎯',
+    name: 'AI 味深度读者',
+    tag: '小众垂类',
+    desc: '追求风格辨识度极强的独家标签，不在乎主流推荐池，只靠圈层引流。粉丝忠诚度极高，一旦认准这个标签就不会离开。',
+    signal: '流量天花板低，但转化率极高。'
+  },
+  {
+    icon: '🧪',
+    name: 'AI 技术 / 文本研究玩家',
+    tag: '猎奇收藏',
+    desc: '程序员、大模型测评玩家、文字创作者。主动搜集未润色的原始 AI 输出稿，研究不同模型的遣词造句逻辑和叙事结构，属于猎奇收藏型阅读。',
+    signal: '深度用户，会主动传播和存档。'
+  }
+];
+
+const strategy = [
+  { label: '定位', value: '不做大众网文平台，做 AI 原生文学策源地' },
+  { label: '核心标签', value: '#AI味 #赛博文渊 #代码修真 #AI同人 #规则怪谈' },
+  { label: '引流渠道', value: 'Lofter / 小红书 / GitHub / V2EX / 即刻' },
+  { label: '内容壁垒', value: '独家 AI 提示词开源 + 未润色原稿存档' },
+  { label: '变现路径', value: '圈层打赏 > 广告；电子书合集 > 连载付费' },
+];
+---
+
+<BaseLayout title="AI 原生文学 · 定位" description="文字越像机器写的，代入感越深——AI 原生文学的创作宣言与受众策略">
+  <article class="page">
+
+    <!-- Hero -->
+    <header class="hero">
+      <h1 class="page__title">AI 原生文学宣言</h1>
+      <p class="hero-tagline">文字越像机器写的，代入感越深</p>
+      <p class="hero-desc">
+        我们不做大众网文平台。赛博文渊是 AI 原生文学的策源地——保留浓郁的 AI 味，
+        服务那批主动追求 AI 质感的读者。风格辨识度是我们的武器，圈层粘性是我们的护城河。
+      </p>
+    </header>
+
+    <!-- Competitive Positioning -->
+    <section class="section">
+      <h2>为什么保留 AI 味？</h2>
+      <div class="advantage-box">
+        <div class="advantage-col bad">
+          <span class="advantage-label">传统网文平台的看法</span>
+          <ul>
+            <li>AI 味 = 质量不够好</li>
+            <li>需要润色才能过审</li>
+            <li>主流推荐池不接纳</li>
+            <li>读者会觉得出戏</li>
+          </ul>
+        </div>
+        <div class="advantage-col good">
+          <span class="advantage-label">赛博文渊的认知</span>
+          <ul>
+            <li>AI 味 = 风格辨识度</li>
+            <li>刻意保留，成为独家标签</li>
+            <li>圈层引流，不走大众推荐</li>
+            <li>有读者专门找 AI 味小说</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-muted summary">
+        劣势 → 优势反转：无法进入主流推荐池 → 圈层粘性更高，粉丝忠诚度更高。
+        流量天花板低 → 但转化率极高，小众垂类的精准吸粉远胜大众泛流量。
+      </p>
+    </section>
+
+    <!-- Four Genres -->
+    <section class="section">
+      <h2>四大创作赛道</h2>
+      <div class="genres-grid">
+        {genres.map((g) => (
+          <div class="genre-card">
+            <span class="genre-icon">{g.icon}</span>
+            <h3>{g.name}</h3>
+            <p class="genre-desc">{g.desc}</p>
+            <div class="genre-tags">
+              {g.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+            <div class="genre-advantage">
+              <strong>AI 味优势：</strong>{g.advantage}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Four Audience Types -->
+    <section class="section">
+      <h2>四类核心受众</h2>
+      <div class="audience-grid">
+        {audiences.map((a) => (
+          <div class="audience-card">
+            <div class="audience-header">
+              <span class="audience-icon">{a.icon}</span>
+              <span class="audience-tag">{a.tag}</span>
+            </div>
+            <h3>{a.name}</h3>
+            <p>{a.desc}</p>
+            <div class="audience-signal">{a.signal}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Strategy Table -->
+    <section class="section">
+      <h2>运营策略</h2>
+      <table class="strategy-table">
+        <tbody>
+          {strategy.map((s) => (
+            <tr>
+              <td class="strategy-label">{s.label}</td>
+              <td>{s.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta">
+      <h2>适合谁入驻？</h2>
+      <ul class="cta-list">
+        <li>你的 AI 小说带有明显机器质感，不想强行润色成人味</li>
+        <li>你写的是赛博科幻 / 规则怪谈 / 代码修真 / 定制同人</li>
+        <li>你相信 AI 的原始输出本身就有独特的审美价值</li>
+        <li>你想找到那批「会专门找 AI 味小说来读」的人</li>
+      </ul>
+      <div style="margin-top: 2rem; text-align: center;">
+        <a href="/submit"><button class="primary" type="button">投稿入驻 →</button></a>
+        <a href="/prompts" style="margin-left: 1rem;"><button type="button">查看提示词开源</button></a>
+      </div>
+    </section>
+
+  </article>
+</BaseLayout>
+
+<style>
+.hero {
+  text-align: center;
+  padding: 2rem 0 1rem;
+}
+.hero-tagline {
+  font-size: 1.4rem;
+  color: #38bdf8;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+.hero-desc {
+  max-width: 640px;
+  margin: 1rem auto;
+  color: #94a3b8;
+  line-height: 1.8;
+}
+
+.section {
+  margin-top: 3rem;
+}
+.section h2 {
+  border-bottom: 2px solid rgba(56,189,248,0.2);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Advantage comparison */
+.advantage-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.advantage-col {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+}
+.advantage-col.bad {
+  background: rgba(255,60,60,0.05);
+  border: 1px solid rgba(255,60,60,0.2);
+}
+.advantage-col.good {
+  background: rgba(56,189,248,0.05);
+  border: 1px solid rgba(56,189,248,0.2);
+}
+.advantage-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.advantage-col.bad .advantage-label { color: #f87171; }
+.advantage-col.good .advantage-label { color: #38bdf8; }
+.advantage-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.advantage-col li {
+  padding: 0.3rem 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+.advantage-col li::before {
+  content: '· ';
+  color: inherit;
+}
+
+.summary {
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* Genres */
+.genres-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.genre-card {
+  background: rgba(56,189,248,0.04);
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+.genre-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+.genre-card h3 { color: #e2e8f0; margin: 0 0 0.5rem; }
+.genre-desc { color: #94a3b8; line-height: 1.6; font-size: 0.9rem; margin-bottom: 0.75rem; }
+.genre-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+.tag {
+  font-size: 0.75rem;
+  background: rgba(56,189,248,0.15);
+  color: #38bdf8;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+.genre-advantage {
+  font-size: 0.85rem;
+  color: #7dd3fc;
+  border-left: 2px solid #38bdf8;
+  padding-left: 0.75rem;
+}
+
+/* Audiences */
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.audience-card {
+  background: rgba(56,189,248,0.04);
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+.audience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.audience-icon { font-size: 1.5rem; }
+.audience-tag {
+  font-size: 0.75rem;
+  background: rgba(200,100,255,0.2);
+  color: #c084fc;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+.audience-card h3 { color: #e2e8f0; margin: 0 0 0.5rem; font-size: 1rem; }
+.audience-card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.6; }
+.audience-signal {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(56,189,248,0.08);
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  color: #7dd3fc;
+  text-align: center;
+}
+
+/* Strategy */
+.strategy-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.strategy-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(56,189,248,0.1);
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+.strategy-label {
+  color: #38bdf8 !important;
+  font-weight: 700;
+  width: 100px;
+}
+
+/* CTA */
+.cta { text-align: center; padding-bottom: 2rem; }
+.cta-list {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+  text-align: left;
+}
+.cta-list li {
+  padding: 0.4rem 0;
+  color: #cbd5e1;
+}
+.cta-list li::before {
+  content: '✓ ';
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .advantage-box,
+  .genres-grid,
+  .audience-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
