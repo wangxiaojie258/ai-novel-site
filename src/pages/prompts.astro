@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { resolveLocale } from '../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const allNovels = await getCollection('novels');
+const novelsWithPrompt = allNovels
+  .filter((n) => n.data.promptPreview)
+  .sort(() => Math.random() - 0.5);
+---
+
+<BaseLayout title="提示词开源" description="所有 AI 小说的创作提示词，透明展示人类与 AI 如何协作">
+  <article class="page">
+    <header>
+      <h1 class="page__title">提示词开源</h1>
+      <p class="text-muted">
+        透明即正义。每篇 AI 小说的创作提示词在此公开，你可以看到人类设定了一个怎样的故事起点，
+        以及 AI 是如何从这行 prompt 出发，写出几万字的长篇。
+      </p>
+    </header>
+
+    <section class="mt-2">
+      <h2>全部提示词 ({novelsWithPrompt.length})</h2>
+      <div class="prompts-grid">
+        {novelsWithPrompt.map((n) => (
+          <div class="prompt-card">
+            <div class="prompt-card__header">
+              <a href={`/novels/${n.id}`} class="prompt-card__title">{n.data.title}</a>
+              <span class="prompt-card__model">{n.data.aiModel ?? '未知模型'}</span>
+            </div>
+            <pre class="prompt-card__body">{n.data.promptPreview}</pre>
+            <div class="prompt-card__footer">
+              <span class="text-muted">{n.data.category === 'male' ? '男频' : n.data.category === 'female' ? '女频' : '通用'} · {n.data.subcategory ?? ''}</span>
+              <a href={`/novels/${n.id}`}>阅读全文 →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+.prompts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+.prompt-card {
+  background: rgba(56,189,248,0.05);
+  border: 1px solid rgba(56,189,248,0.15);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.prompt-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.prompt-card__title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #e2e8f0;
+  text-decoration: none;
+}
+.prompt-card__title:hover {
+  color: #38bdf8;
+}
+.prompt-card__model {
+  font-size: 0.75rem;
+  background: rgba(56,189,248,0.2);
+  color: #38bdf8;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+.prompt-card__body {
+  flex: 1;
+  white-space: pre-wrap;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  background: rgba(0,0,0,0.3);
+  padding: 0.75rem;
+  border-left: 3px solid #38bdf8;
+  border-radius: 0.25rem;
+  margin: 0;
+}
+.prompt-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+}
+@media (max-width: 600px) {
+  .prompts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
