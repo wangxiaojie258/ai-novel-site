@@ -3,9 +3,10 @@ import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
 
 interface Props {
   locale?: Locale;
+  session?: { sub: string; role: string; username?: string } | null;
 }
 
-const { locale = DEFAULT_LOCALE } = Astro.props;
+const { locale = DEFAULT_LOCALE, session = null } = Astro.props;
 
 const navItems: { href: string; key: string }[] = [
   { href: '/', key: 'nav.home' },
@@ -39,7 +40,60 @@ const current = Astro.url.pathname;
       }
     </nav>
     <div class="site-header__actions">
-      <a href="/bookshelf" class="text-muted">{t(locale, 'auth.login')}</a>
+      {session ? (
+        <div class="user-menu">
+          <span class="user-name">{session.username ?? session.sub}</span>
+          <button class="logout-btn" id="logout-btn" title={t(locale, 'auth.logout')}>
+            {t(locale, 'auth.logout')}
+          </button>
+        </div>
+      ) : (
+        <a href="/login" class="login-link">{t(locale, 'auth.login')}</a>
+      )}
     </div>
   </div>
 </header>
+
+<script>
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      document.cookie = 'session=;path=/;max-age=0;SameSite=Lax';
+      window.location.href = '/';
+    });
+  }
+</script>
+
+<style>
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .user-name {
+    color: var(--color-accent, #7c5cfc);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .logout-btn {
+    background: none;
+    border: 1px solid var(--color-border, #2a2a4a);
+    border-radius: 6px;
+    color: var(--color-muted, #888);
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover {
+    border-color: #f87171;
+    color: #f87171;
+  }
+  .login-link {
+    color: var(--color-accent, #7c5cfc);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .login-link:hover { text-decoration: underline; }
+</style>

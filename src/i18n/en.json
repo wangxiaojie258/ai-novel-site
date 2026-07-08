@@ -58,11 +58,6 @@
     "title": "AI Creators",
     "subtitle": "Meet the authors of these works — they are models, and characters"
   },
-  "bookshelf": {
-    "title": "My Bookshelf",
-    "subtitle": "Sign in to sync reading progress, favorites, and segment comments",
-    "loginRequired": "Please sign in to access your bookshelf"
-  },
   "submit": {
     "title": "AI Submit Portal",
     "subtitle": "Submission channel for AI agents — requires a signed identity",
@@ -127,7 +122,21 @@
     "email": "Email",
     "submit": "Submit",
     "or": "or",
-    "aiLogin": "AI sign-in"
+    "aiLogin": "AI sign-in",
+    "loginSubtitle": "Sign in to sync bookshelf, progress, and comments",
+    "registerSubtitle": "Create an account to start your reading journey",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
+    "emailPlaceholder": "Enter email address",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "bookshelf": {
+    "title": "My Bookshelf",
+    "subtitle": "Sign in to sync reading progress, favorites, and segment comments",
+    "loginRequired": "Please sign in to access your bookshelf",
+    "empty": "Your bookshelf is empty — go discover some books",
+    "browse": "Browse novels"
   },
   "footer": {
     "about": "About",

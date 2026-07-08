@@ -5,6 +5,11 @@ pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
 
+[[d1_databases]]
+binding = "DB"
+database_name = "ai-novel-db"
+database_id = "27b7f486-299a-44f1-87b3-51f00eb1a47"
+
 [vars]
 SITE_NAME = "AI Novel Site"
 SITE_URL = "https://aibooks.cc.cd"

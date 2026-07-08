@@ -2,13 +2,11 @@
  * Cloudflare Pages Function: /api/auth
  *
  * POST /api/auth  { action: 'login' | 'register', username, password, email? }
- *
- * Skeleton: returns a signed JWT for any non-empty credentials so the
- * front-end can be wired up. Real impl will check / insert into the
- * `users` table using the password hashing helpers in src/lib/auth.
+ * GET  /api/auth  returns current session if authenticated
  */
 import type { APIRoute } from 'astro';
 import { signSession, hashPassword, verifyPassword } from '../../lib/auth';
+import { createUser, findUserByUsername } from '../../lib/db';
 
 export const prerender = false;
 
@@ -19,12 +17,37 @@ interface AuthBody {
   email?: string;
 }
 
-function getEnv(locals: unknown): Record<string, string> {
-  return ((locals as { runtime?: { env?: Record<string, string> } })?.runtime?.env ?? {}) as Record<string, string>;
+function getDB(locals: App.Locals): D1Database | undefined {
+  return (locals as Record<string, unknown>).runtime &&
+    ((locals as Record<string, unknown>).runtime as Record<string, unknown>).env
+    ? (((locals as Record<string, unknown>).runtime as Record<string, unknown>).env as Record<string, D1Database>).DB
+    : undefined;
 }
+
+function getEnv(locals: App.Locals): Record<string, string> {
+  return (
+    ((locals as Record<string, unknown>)?.runtime as Record<string, unknown>)?.env ??
+    {}
+  ) as Record<string, string>;
+}
+
+export const GET: APIRoute = async ({ locals }) => {
+  const env = getEnv(locals);
+  const claims = (locals as Record<string, unknown>).session as { sub: string; role: string; username?: string } | null;
+
+  if (!claims) {
+    return json({ authenticated: false }, 401);
+  }
+
+  return json({
+    authenticated: true,
+    user: { id: claims.sub, username: claims.username ?? null, role: claims.role },
+  });
+};
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = getEnv(locals);
+  const db = getDB(locals);
 
   let body: AuthBody;
   try {
@@ -36,25 +59,61 @@ export const POST: APIRoute = async ({ request, locals }) => {
   if (!body.username || !body.password) {
     return json({ error: 'username and password are required' }, 400);
   }
-  if (body.action === 'register' && !body.email) {
-    return json({ error: 'email is required for registration' }, 400);
+
+  const username = body.username.trim().toLowerCase();
+
+  if (body.action === 'register') {
+    if (!body.email) {
+      return json({ error: 'email is required for registration' }, 400);
+    }
+    if (username.length < 2 || body.password.length < 6) {
+      return json({ error: 'username must be at least 2 chars, password at least 6 chars' }, 400);
+    }
+
+    const existing = await findUserByUsername(db, username);
+    if (existing) {
+      return json({ error: 'username already exists' }, 409);
+    }
+
+    const passwordHash = await hashPassword(body.password);
+    const userId = `u_${username}_${Date.now().toString(36)}`;
+    const user = await createUser(db, userId, username, body.email.trim(), passwordHash);
+
+    const token = await signSession(
+      { sub: user.id, role: user.role, username: user.username },
+      env,
+      '7d',
+    );
+
+    return json({
+      ok: true,
+      action: 'register',
+      user: { id: user.id, username: user.username, email: user.email, role: user.role },
+      token,
+    });
   }
 
-  const hashed = hashPassword(body.password);
-  const ok = body.action === 'register' ? true : verifyPassword(body.password, hashed);
-  if (!ok) return json({ error: 'invalid credentials' }, 401);
+  // login
+  const user = await findUserByUsername(db, username);
+  if (!user) {
+    return json({ error: 'invalid credentials' }, 401);
+  }
 
-  const userId = `u_${body.username.toLowerCase()}`;
+  const valid = await verifyPassword(body.password, user.password_hash);
+  if (!valid) {
+    return json({ error: 'invalid credentials' }, 401);
+  }
+
   const token = await signSession(
-    { sub: userId, role: 'reader', username: body.username },
+    { sub: user.id, role: user.role, username: user.username },
     env,
     '7d',
   );
 
   return json({
     ok: true,
-    action: body.action,
-    user: { id: userId, username: body.username, email: body.email ?? null, role: 'reader' },
+    action: 'login',
+    user: { id: user.id, username: user.username, email: user.email, role: user.role },
     token,
   });
 };

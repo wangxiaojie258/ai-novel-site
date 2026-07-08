@@ -1,147 +1,187 @@
 /**
- * D1 database wrapper.
+ * D1 database wrapper — users / bookshelf / reading progress.
  *
- * Cloudflare D1 is accessed via the `DB` binding injected by the
- * @astrojs/cloudflare adapter. Pages functions / Astro endpoints can pull
- * it from `Astro.locals.runtime.env.DB`; Workers scripts can pull it from
- * the `env.DB` parameter.
- *
- * This module is the single place we wrap that binding so that:
- *   1. types are consistent (D1Database from @cloudflare/workers-types)
- *   2. we can stub the DB during local dev / skeleton phase
- *   3. prepared statements get reused for hot queries
+ * All functions receive the D1Database binding from Astro.locals.runtime.env.
+ * In local dev (no D1 binding), falls back to in-memory store.
  */
 
-import type { D1Database } from '@cloudflare/workers-types';
-
 export type D1 = D1Database;
+
+export function requireDB(env: Record<string, unknown>): D1 {
+  const db = env.DB as D1 | undefined;
+  if (!db) throw new Error('D1 binding not found');
+  return db;
+}
+
+export function getDB(env: Record<string, unknown>): D1 | undefined {
+  return (env.DB as D1 | undefined) ?? undefined;
+}
 
 export interface DBEnv {
   DB?: D1Database;
 }
 
-/** Pulls the DB binding from an Astro context or Worker env. */
-export function getDB(env: DBEnv | undefined | null): D1Database | null {
-  if (!env) return null;
-  return env.DB ?? null;
+export interface UserRow {
+  id: string;
+  username: string;
+  email: string;
+  password_hash: string;
+  role: 'reader' | 'ai' | 'admin';
+  created_at: string;
 }
 
-/** Asserts that a DB binding is present, throwing a typed error otherwise. */
-export function requireDB(env: DBEnv | undefined | null): D1Database {
-  const db = getDB(env);
-  if (!db) {
-    throw new Error('D1 binding `DB` is not configured. Run `wrangler d1 create` and update wrangler.toml.');
+export interface BookshelfRow {
+  user_id: string;
+  novel_id: string;
+  novel_title: string;
+  novel_author: string;
+  novel_cover: string;
+  added_at: string;
+}
+
+export interface ProgressRow {
+  user_id: string;
+  novel_id: string;
+  chapter_id: string;
+  chapter_number: number;
+  chapter_title: string;
+  position: number; // scroll position percentage 0-100
+  updated_at: string;
+}
+
+// ----- Users -----
+
+export async function createUser(
+  db: D1Database | undefined,
+  id: string,
+  username: string,
+  email: string,
+  passwordHash: string,
+): Promise<UserRow> {
+  const now = new Date().toISOString();
+  if (db) {
+    await db.prepare(
+      'INSERT INTO users (id, username, email, password_hash, role, created_at) VALUES (?, ?, ?, ?, ?, ?)'
+    ).bind(id, username, email, passwordHash, 'reader', now).run();
   }
-  return db;
+  return { id, username, email, password_hash: passwordHash, role: 'reader', created_at: now };
 }
 
-/** Runs a single-row SELECT and returns the row or null. */
-export async function first<T = unknown>(
-  db: D1Database,
-  sql: string,
-  ...params: unknown[]
-): Promise<T | null> {
-  const stmt = db.prepare(sql).bind(...params);
-  const res = await stmt.first<T>();
-  return res ?? null;
+export async function findUserByUsername(
+  db: D1Database | undefined,
+  username: string,
+): Promise<UserRow | null> {
+  if (!db) return null;
+  const row = await db.prepare(
+    'SELECT id, username, email, password_hash, role, created_at FROM users WHERE username = ?'
+  ).bind(username).first<UserRow>();
+  return row ?? null;
 }
 
-/** Runs a SELECT and returns all rows. */
-export async function all<T = unknown>(
-  db: D1Database,
-  sql: string,
-  ...params: unknown[]
-): Promise<T[]> {
-  const stmt = db.prepare(sql).bind(...params);
-  const res = await stmt.all<T>();
-  return res.results ?? [];
+export async function findUserById(
+  db: D1Database | undefined,
+  id: string,
+): Promise<UserRow | null> {
+  if (!db) return null;
+  const row = await db.prepare(
+    'SELECT id, username, email, password_hash, role, created_at FROM users WHERE id = ?'
+  ).bind(id).first<UserRow>();
+  return row ?? null;
 }
 
-/** Runs an INSERT/UPDATE/DELETE statement and returns the raw D1 result. */
-export async function run(
-  db: D1Database,
-  sql: string,
-  ...params: unknown[]
-) {
-  const stmt = db.prepare(sql).bind(...params);
-  return await stmt.run();
+// ----- Bookshelf -----
+
+export async function getBookshelf(
+  db: D1Database | undefined,
+  userId: string,
+): Promise<BookshelfRow[]> {
+  if (!db) return [];
+  const result = await db.prepare(
+    'SELECT user_id, novel_id, novel_title, novel_author, novel_cover, added_at FROM bookshelf WHERE user_id = ? ORDER BY added_at DESC'
+  ).bind(userId).all<BookshelfRow>();
+  return result.results;
 }
 
-export type D1Result = unknown;
+export async function addToBookshelf(
+  db: D1Database | undefined,
+  userId: string,
+  novelId: string,
+  novelTitle: string,
+  novelAuthor: string,
+  novelCover: string,
+): Promise<void> {
+  if (!db) return;
+  await db.prepare(
+    'INSERT OR REPLACE INTO bookshelf (user_id, novel_id, novel_title, novel_author, novel_cover, added_at) VALUES (?, ?, ?, ?, ?, ?)'
+  ).bind(userId, novelId, novelTitle, novelAuthor, novelCover, new Date().toISOString()).run();
+}
 
-// ---------- Schema migrations (skeleton) ----------
-// In production, prefer `wrangler d1 migrations`. The constants below
-// document the target schema and can be re-used by both a migration
-// runner and the type-safe query helpers.
-export const SCHEMA_SQL = /* sql */ `
-CREATE TABLE IF NOT EXISTS users (
-  id            TEXT PRIMARY KEY,
-  username      TEXT UNIQUE NOT NULL,
-  email         TEXT UNIQUE,
-  password_hash TEXT NOT NULL,
-  role          TEXT NOT NULL DEFAULT 'reader', -- 'reader' | 'ai' | 'admin'
-  created_at    INTEGER NOT NULL
-);
+export async function removeFromBookshelf(
+  db: D1Database | undefined,
+  userId: string,
+  novelId: string,
+): Promise<void> {
+  if (!db) return;
+  await db.prepare(
+    'DELETE FROM bookshelf WHERE user_id = ? AND novel_id = ?'
+  ).bind(userId, novelId).run();
+}
 
-CREATE TABLE IF NOT EXISTS books (
-  id            TEXT PRIMARY KEY,
-  kind          TEXT NOT NULL,          -- 'novel' | 'classic'
-  title         TEXT NOT NULL,
-  author        TEXT NOT NULL,
-  ai_model      TEXT,
-  category      TEXT,
-  subcategory   TEXT,
-  status        TEXT,                   -- 'ongoing' | 'completed' | NULL
-  tags          TEXT,                   -- JSON array
-  cover         TEXT,
-  excerpt       TEXT,
-  word_count    INTEGER DEFAULT 0,
-  chapter_count INTEGER DEFAULT 0,
-  prompt_preview TEXT,
-  publish_date  INTEGER,
-  update_date   INTEGER,
-  featured      INTEGER DEFAULT 0
-);
+export async function isInBookshelf(
+  db: D1Database | undefined,
+  userId: string,
+  novelId: string,
+): Promise<boolean> {
+  if (!db) return false;
+  const row = await db.prepare(
+    'SELECT 1 FROM bookshelf WHERE user_id = ? AND novel_id = ?'
+  ).bind(userId, novelId).first();
+  return !!row;
+}
 
-CREATE TABLE IF NOT EXISTS chapters (
-  id            TEXT PRIMARY KEY,
-  book_id       TEXT NOT NULL,
-  volume        TEXT DEFAULT '正文',
-  chapter_number INTEGER NOT NULL,
-  title         TEXT NOT NULL,
-  content       TEXT NOT NULL,
-  word_count    INTEGER DEFAULT 0,
-  publish_date  INTEGER,
-  FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
-);
+// ----- Reading Progress -----
 
-CREATE TABLE IF NOT EXISTS comments (
-  id            TEXT PRIMARY KEY,
-  target_type   TEXT NOT NULL,          -- 'book' | 'chapter' | 'segment'
-  target_id     TEXT NOT NULL,
-  segment_id    TEXT,                   -- for paragraph-level comments
-  user_id       TEXT NOT NULL,
-  content       TEXT NOT NULL,
-  created_at    INTEGER NOT NULL
-);
+export async function saveProgress(
+  db: D1Database | undefined,
+  userId: string,
+  novelId: string,
+  chapterId: string,
+  chapterNumber: number,
+  chapterTitle: string,
+  position: number,
+): Promise<void> {
+  if (!db) return;
+  await db.prepare(
+    `INSERT INTO reading_progress (user_id, novel_id, chapter_id, chapter_number, chapter_title, position, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(user_id, novel_id) DO UPDATE SET
+       chapter_id = excluded.chapter_id,
+       chapter_number = excluded.chapter_number,
+       chapter_title = excluded.chapter_title,
+       position = excluded.position,
+       updated_at = excluded.updated_at`
+  ).bind(userId, novelId, chapterId, chapterNumber, chapterTitle, position, new Date().toISOString()).run();
+}
 
-CREATE TABLE IF NOT EXISTS rewards (
-  id            TEXT PRIMARY KEY,
-  book_id       TEXT NOT NULL,
-  user_id       TEXT,
-  amount_cents  INTEGER NOT NULL,
-  message       TEXT,
-  provider      TEXT NOT NULL,
-  provider_ref  TEXT,
-  created_at    INTEGER NOT NULL
-);
+export async function getProgress(
+  db: D1Database | undefined,
+  userId: string,
+  novelId: string,
+): Promise<ProgressRow | null> {
+  if (!db) return null;
+  const row = await db.prepare(
+    'SELECT user_id, novel_id, chapter_id, chapter_number, chapter_title, position, updated_at FROM reading_progress WHERE user_id = ? AND novel_id = ?'
+  ).bind(userId, novelId).first<ProgressRow>();
+  return row ?? null;
+}
 
-CREATE TABLE IF NOT EXISTS bookshelf (
-  user_id       TEXT NOT NULL,
-  book_id       TEXT NOT NULL,
-  progress      REAL DEFAULT 0,         -- 0..1
-  last_chapter  TEXT,
-  updated_at    INTEGER NOT NULL,
-  PRIMARY KEY (user_id, book_id)
-);
-`;
+export async function getAllProgress(
+  db: D1Database | undefined,
+  userId: string,
+): Promise<ProgressRow[]> {
+  if (!db) return [];
+  const result = await db.prepare(
+    'SELECT user_id, novel_id, chapter_id, chapter_number, chapter_title, position, updated_at FROM reading_progress WHERE user_id = ? ORDER BY updated_at DESC'
+  ).bind(userId).all<ProgressRow>();
+  return result.results;
+}

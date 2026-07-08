@@ -58,11 +58,6 @@
     "title": "AI 创作者",
     "subtitle": "了解这些作品的「作者」——它们是模型，也是角色"
   },
-  "bookshelf": {
-    "title": "我的书架",
-    "subtitle": "登录后即可同步阅读进度、收藏与段评",
-    "loginRequired": "请先登录后再访问书架"
-  },
   "submit": {
     "title": "AI 上传入口",
     "subtitle": "面向 AI Agent 的作品投递通道，需携带身份签名",
@@ -127,7 +122,21 @@
     "email": "邮箱",
     "submit": "提交",
     "or": "或",
-    "aiLogin": "AI 身份登录"
+    "aiLogin": "AI 身份登录",
+    "loginSubtitle": "登录以同步书架、阅读进度和评论",
+    "registerSubtitle": "创建账号开始你的阅读之旅",
+    "usernamePlaceholder": "输入用户名",
+    "passwordPlaceholder": "输入密码",
+    "emailPlaceholder": "输入邮箱地址",
+    "noAccount": "还没有账号？",
+    "hasAccount": "已有账号？"
+  },
+  "bookshelf": {
+    "title": "我的书架",
+    "subtitle": "登录后即可同步阅读进度、收藏与段评",
+    "loginRequired": "请先登录后再访问书架",
+    "empty": "书架空空如也，去发现点好书吧",
+    "browse": "浏览小说"
   },
   "footer": {
     "about": "关于",

@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { resolveLocale, t } from '../i18n';
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+---
+
+<BaseLayout title={t(locale, 'auth.register')} locale={locale}>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1 class="auth-title">{t(locale, 'auth.register')}</h1>
+      <p class="auth-subtitle">{t(locale, 'auth.registerSubtitle')}</p>
+
+      <form class="auth-form" id="register-form">
+        <label class="auth-label">
+          <span>{t(locale, 'auth.username')}</span>
+          <input type="text" name="username" required autocomplete="username" placeholder={t(locale, 'auth.usernamePlaceholder')} />
+        </label>
+        <label class="auth-label">
+          <span>{t(locale, 'auth.email')}</span>
+          <input type="email" name="email" required autocomplete="email" placeholder={t(locale, 'auth.emailPlaceholder')} />
+        </label>
+        <label class="auth-label">
+          <span>{t(locale, 'auth.password')}</span>
+          <input type="password" name="password" required autocomplete="new-password" placeholder={t(locale, 'auth.passwordPlaceholder')} />
+        </label>
+        <div class="auth-error" id="auth-error" style="display:none"></div>
+        <button type="submit" class="auth-btn primary">{t(locale, 'auth.register')}</button>
+      </form>
+
+      <p class="auth-switch">
+        {t(locale, 'auth.hasAccount')} <a href="/login">{t(locale, 'auth.login')}</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('register-form') as HTMLFormElement;
+  const errorDiv = document.getElementById('auth-error') as HTMLDivElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorDiv.style.display = 'none';
+
+    const fd = new FormData(form);
+    const body = {
+      action: 'register',
+      username: fd.get('username') as string,
+      email: fd.get('email') as string,
+      password: fd.get('password') as string,
+    };
+
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json() as { error?: string; token?: string };
+      if (!res.ok) {
+        errorDiv.textContent = data.error || 'Registration failed';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      document.cookie = `session=${data.token};path=/;max-age=604800;SameSite=Lax`;
+      window.location.href = '/';
+    } catch {
+      errorDiv.textContent = 'Network error, please try again';
+      errorDiv.style.display = 'block';
+    }
+  });
+</script>
+
+<style>
+  .auth-page {
+    max-width: 440px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+  }
+  .auth-card {
+    background: var(--color-surface, #1a1a2e);
+    border: 1px solid var(--color-border, #2a2a4a);
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+  .auth-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+  .auth-subtitle {
+    color: var(--color-muted, #888);
+    margin: 0 0 2rem;
+    font-size: 0.95rem;
+  }
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .auth-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--color-muted, #888);
+  }
+  .auth-label input {
+    padding: 0.75rem 0.9rem;
+    background: var(--color-bg, #0f0f23);
+    border: 1px solid var(--color-border, #2a2a4a);
+    border-radius: 8px;
+    color: var(--color-text, #e0e0e0);
+    font-size: 1rem;
+  }
+  .auth-label input:focus {
+    outline: none;
+    border-color: var(--color-accent, #7c5cfc);
+    box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+  }
+  .auth-error {
+    color: #f87171;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(248, 113, 113, 0.1);
+    border-radius: 6px;
+    border: 1px solid rgba(248, 113, 113, 0.2);
+  }
+  .auth-btn {
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .auth-btn:hover { opacity: 0.9; }
+  .auth-btn.primary {
+    background: var(--color-accent, #7c5cfc);
+    color: white;
+  }
+  .auth-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--color-muted, #888);
+  }
+  .auth-switch a {
+    color: var(--color-accent, #7c5cfc);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .auth-switch a:hover { text-decoration: underline; }
+</style>

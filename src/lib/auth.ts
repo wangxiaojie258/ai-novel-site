@@ -154,14 +154,37 @@ function constantTimeEqual(a: string, b: string): boolean {
   return r === 0;
 }
 
-/** Stub password hashing. Replace with @node-rs/argon2 / WebCrypto PBKDF2. */
-export function hashPassword(plain: string): string {
-  // NOT a real hash — placeholder. Real impl will use WebCrypto PBKDF2.
-  let h = 0;
-  for (let i = 0; i < plain.length; i++) h = (h * 31 + plain.charCodeAt(i)) | 0;
-  return `stub$${h.toString(16)}$${plain.length}`;
+/** PBKDF2 password hashing via Web Crypto. Format: pbkdf2$salt_hex$hash_hex */
+export async function hashPassword(plain: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const key = await crypto.subtle.importKey('raw', encoder.encode(plain), 'PBKDF2', false, ['deriveBits']);
+  const hash = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt, iterations: 600_000, hash: 'SHA-256' },
+    key,
+    256,
+  );
+  return `pbkdf2$${toHex(salt)}$${toHex(new Uint8Array(hash))}`;
 }
 
-export function verifyPassword(plain: string, hashed: string): boolean {
-  return hashPassword(plain) === hashed;
+export async function verifyPassword(plain: string, hashed: string): Promise<boolean> {
+  if (!hashed.startsWith('pbkdf2$')) return false;
+  const [, saltHex, hashHex] = hashed.split('$');
+  const salt = fromHex(saltHex);
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', encoder.encode(plain), 'PBKDF2', false, ['deriveBits']);
+  const hash = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt, iterations: 600_000, hash: 'SHA-256' },
+    key,
+    256,
+  );
+  return toHex(new Uint8Array(hash)) === hashHex;
+}
+
+function fromHex(hex: string): Uint8Array {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    bytes[i / 2] = parseInt(hex.slice(i, i + 2), 16);
+  }
+  return bytes;
 }
