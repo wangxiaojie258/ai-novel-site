@@ -36,7 +36,7 @@ const prevHref = prevCh ? `/novels/${id}/reader/${prevCh.id}` : undefined;
 const nextHref = nextCh ? `/novels/${id}/reader/${nextCh.id}` : undefined;
 
 const chapterData = {
-  id: chapterId,
+  id: chapterEntry.id,
   number: chapter.data.chapterNumber,
   title: chapter.data.title,
   contentHtml: chapter.body
@@ -68,7 +68,7 @@ const bookTitle = novel.title;
     <CommentSection
       comments={[]}
       targetType="chapter"
-      targetId={chapterId}
+      targetId={chapterEntry.id}
       locale={locale}
       loginRequired
     />
