@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: BOSS战
 wordCount: 2773
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## BOSS战

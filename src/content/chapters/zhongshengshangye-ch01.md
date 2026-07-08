@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 醒来2003
 wordCount: 2360
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 醒来2003

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 重掌中馈
 wordCount: 2526
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 重掌中馈

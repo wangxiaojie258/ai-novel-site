@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookGrid from '../../components/BookGrid.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import { resolveLocale, t } from '../../i18n';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const params = Astro.url.searchParams;
+const activeCategory = params.get('category') ?? '';
+const activeStatus = params.get('status') ?? '';
+
+const categories = [
+  { key: '', label: t(locale, 'novels.filters.category') + ': All', href: '/novels' },
+  { key: 'male', label: t(locale, 'novels.category.male'), href: '/novels?category=male' },
+  { key: 'female', label: t(locale, 'novels.category.female'), href: '/novels?category=female' },
+  { key: 'general', label: t(locale, 'novels.category.general'), href: '/novels?category=general' },
+];
+
+const allNovels = await getCollection('novels');
+
+const filtered = allNovels
+  .filter((entry) => {
+    if (activeCategory && entry.data.category !== activeCategory) return false;
+    if (activeStatus && entry.data.status !== activeStatus) return false;
+    return true;
+  })
+  .map((entry) => ({
+    id: entry.id,
+    title: entry.data.title,
+    author: entry.data.author,
+    cover: entry.data.cover,
+    status: entry.data.status,
+    category: entry.data.category,
+    chapterCount: entry.data.chapterCount,
+    wordCount: entry.data.wordCount,
+    href: `/novels/${entry.id}`,
+  }));
+---
+
+<BaseLayout title={t(locale, 'novels.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'novels.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'novels.subtitle')}</p>
+    <CategoryNav items={categories} activeKey={activeCategory} />
+    <BookGrid books={filtered} locale={locale} variant="novel" emptyText="No novels match the filters yet." />
+  </div>
+</BaseLayout>

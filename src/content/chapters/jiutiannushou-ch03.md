@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 魔界少主
 wordCount: 2054
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 魔界少主

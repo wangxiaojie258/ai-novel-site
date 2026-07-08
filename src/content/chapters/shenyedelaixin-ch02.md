@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 十二年前的雨夜
 wordCount: 3097
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 十二年前的雨夜

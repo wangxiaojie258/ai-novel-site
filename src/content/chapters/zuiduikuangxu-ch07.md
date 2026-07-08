@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 7
 title: 岳父母震惊
 wordCount: 1981
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 岳父母震惊

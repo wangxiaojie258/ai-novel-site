@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 十万铁骑
 wordCount: 2467
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 十万铁骑

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 失败与重生
 wordCount: 2093
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 失败与重生

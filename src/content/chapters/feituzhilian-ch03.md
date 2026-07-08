@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 跟我走吧
 wordCount: 2626
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 跟我走吧

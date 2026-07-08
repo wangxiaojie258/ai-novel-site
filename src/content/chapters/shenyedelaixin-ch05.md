@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 最后一封信
 wordCount: 2871
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 最后一封信

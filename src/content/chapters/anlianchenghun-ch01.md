@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 十年后的婚礼彩排
 wordCount: 2963
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 十年后的婚礼彩排

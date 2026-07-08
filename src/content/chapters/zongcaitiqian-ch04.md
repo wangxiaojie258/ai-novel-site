@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 冷漠的他
 wordCount: 2659
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 冷漠的他

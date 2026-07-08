@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 校园地摊
 wordCount: 2394
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 校园地摊

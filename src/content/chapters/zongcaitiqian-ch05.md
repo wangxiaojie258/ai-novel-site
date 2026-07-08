@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 三年之期
 wordCount: 2387
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 三年之期

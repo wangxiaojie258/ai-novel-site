@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 咒怨
 wordCount: 2482
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 咒怨

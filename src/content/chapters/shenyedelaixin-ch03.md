@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 第一桩旧案
 wordCount: 3355
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 第一桩旧案

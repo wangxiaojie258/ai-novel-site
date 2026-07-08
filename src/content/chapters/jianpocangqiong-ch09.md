@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 9
 title: 名震剑域
 wordCount: 2188
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 名震剑域

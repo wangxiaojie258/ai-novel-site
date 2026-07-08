@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 女王降临
 wordCount: 2761
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 女王降临

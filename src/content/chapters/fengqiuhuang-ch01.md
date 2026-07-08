@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 和亲塞外
 wordCount: 2645
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 和亲塞外

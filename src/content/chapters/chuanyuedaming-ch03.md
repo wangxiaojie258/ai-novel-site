@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 第一桶金
 wordCount: 2695
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 第一桶金

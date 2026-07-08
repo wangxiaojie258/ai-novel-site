@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 暗藏的传承
 wordCount: 2337
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 暗藏的传承

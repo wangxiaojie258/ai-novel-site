@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 7
 title: 一剑封喉
 wordCount: 2449
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 一剑封喉

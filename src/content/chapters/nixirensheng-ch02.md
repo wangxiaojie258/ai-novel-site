@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 互联网的春风
 wordCount: 2150
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 互联网的春风

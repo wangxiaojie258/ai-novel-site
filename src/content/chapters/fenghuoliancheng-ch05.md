@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 生死一线
 wordCount: 2086
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 生死一线

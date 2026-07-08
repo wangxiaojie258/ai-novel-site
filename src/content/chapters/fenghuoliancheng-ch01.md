@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 上海滩的枪声
 wordCount: 2203
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 上海滩的枪声

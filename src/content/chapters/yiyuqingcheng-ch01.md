@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 北漂第六年
 wordCount: 2548
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 北漂第六年

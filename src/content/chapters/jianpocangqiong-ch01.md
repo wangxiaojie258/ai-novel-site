@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 剑冢中醒来的少年
 wordCount: 2089
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 剑冢中醒来的少年

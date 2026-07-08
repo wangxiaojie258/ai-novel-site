@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 第一战
 wordCount: 2319
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 第一战

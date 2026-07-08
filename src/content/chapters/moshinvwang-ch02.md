@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 重生
 wordCount: 2407
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 重生

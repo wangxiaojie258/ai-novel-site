@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 师父的告诫
 wordCount: 2412
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 师父的告诫

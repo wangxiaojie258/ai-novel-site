@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 第一次上战场
 wordCount: 1993
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 第一次上战场

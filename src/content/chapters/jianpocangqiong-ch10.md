@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 10
 title: 天骄榜
 wordCount: 2254
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 天骄榜

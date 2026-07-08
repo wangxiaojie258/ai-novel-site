@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 1024封信
 wordCount: 2425
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 1024封信

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 上门女婿的第一天
 wordCount: 2084
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 上门女婿的第一天

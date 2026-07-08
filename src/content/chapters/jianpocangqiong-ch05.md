@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 青城剑派
 wordCount: 2146
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 青城剑派

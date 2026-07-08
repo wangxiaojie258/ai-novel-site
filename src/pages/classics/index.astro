@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookGrid from '../../components/BookGrid.astro';
 import { resolveLocale, t } from '../../i18n';
@@ -7,11 +8,15 @@ export const prerender = false;
 
 const locale = resolveLocale(Astro.url.searchParams.get('lang'));
 
-const classics = [
-  { id: 'demo-classic-1', title: '红楼梦', author: '曹雪芹', chapterCount: 120, wordCount: 730_000, href: '/classics/demo-classic-1' },
-  { id: 'demo-classic-2', title: '百年孤独', author: '加西亚·马尔克斯', chapterCount: 20, wordCount: 260_000, href: '/classics/demo-classic-2' },
-  { id: 'demo-classic-3', title: '战争与和平', author: '列夫·托尔斯泰', chapterCount: 380, wordCount: 1_200_000, href: '/classics/demo-classic-3' },
-];
+const classicEntries = await getCollection('classics');
+const classics = classicEntries.map((entry) => ({
+  id: entry.id,
+  title: entry.data.title,
+  author: entry.data.author,
+  chapterCount: entry.data.chapterCount,
+  wordCount: entry.data.wordCount,
+  href: `/classics/${entry.id}`,
+}));
 ---
 
 <BaseLayout title={t(locale, 'classics.title')}>

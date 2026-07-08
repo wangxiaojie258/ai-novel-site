@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 废墟中的少年
 wordCount: 2271
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 废墟中的少年

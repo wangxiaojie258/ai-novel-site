@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 反锁的密室
 wordCount: 2807
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 反锁的密室

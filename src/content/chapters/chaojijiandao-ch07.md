@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 7
 title: 富豪圈震动
 wordCount: 2697
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 富豪圈震动

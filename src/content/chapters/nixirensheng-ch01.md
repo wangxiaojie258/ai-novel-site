@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 摆摊的小贩
 wordCount: 2272
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 摆摊的小贩

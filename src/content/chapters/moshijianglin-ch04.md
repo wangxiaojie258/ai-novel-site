@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 庇护所
 wordCount: 2406
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 庇护所

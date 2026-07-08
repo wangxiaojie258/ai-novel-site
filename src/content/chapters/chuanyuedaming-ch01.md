@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 醒在明末
 wordCount: 2375
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 醒在明末

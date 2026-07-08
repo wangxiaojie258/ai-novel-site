@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 通关
 wordCount: 2438
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 通关

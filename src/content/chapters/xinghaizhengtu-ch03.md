@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 第一战
 wordCount: 2214
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 第一战

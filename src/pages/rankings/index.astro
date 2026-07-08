@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookGrid from '../../components/BookGrid.astro';
+import { resolveLocale, t } from '../../i18n';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const tab = Astro.url.searchParams.get('tab') ?? 'novels';
+
+const allNovels = await getCollection('novels');
+const novelRankings = allNovels
+  .sort((a, b) => (b.data.wordCount ?? 0) - (a.data.wordCount ?? 0))
+  .slice(0, 20)
+  .map((entry) => ({
+    id: entry.id,
+    title: entry.data.title,
+    author: entry.data.author,
+    status: entry.data.status,
+    category: entry.data.category,
+    chapterCount: entry.data.chapterCount,
+    wordCount: entry.data.wordCount,
+    href: `/novels/${entry.id}`,
+  }));
+
+const allClassics = await getCollection('classics');
+const classicRankings = allClassics
+  .sort((a, b) => (b.data.wordCount ?? 0) - (a.data.wordCount ?? 0))
+  .map((entry) => ({
+    id: entry.id,
+    title: entry.data.title,
+    author: entry.data.author,
+    chapterCount: entry.data.chapterCount,
+    wordCount: entry.data.wordCount,
+    href: `/classics/${entry.id}`,
+  }));
+
+const tabs = [
+  { key: 'novels', label: t(locale, 'novels.title') },
+  { key: 'classics', label: t(locale, 'classics.title') },
+];
+---
+
+<BaseLayout title={t(locale, 'rankings.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'rankings.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'rankings.subtitle')}</p>
+
+    <nav class="tab-nav">
+      {tabs.map((t) => (
+        <a href={`/rankings?tab=${t.key}`} class={`tab-nav__link${tab === t.key ? ' tab-nav__link--active' : ''}`}>
+          {t.label}
+        </a>
+      ))}
+    </nav>
+
+    {tab === 'novels' ? (
+      <BookGrid books={novelRankings} locale={locale} variant="novel" />
+    ) : (
+      <BookGrid books={classicRankings} locale={locale} variant="classic" />
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+.tab-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-border, #e5e7eb);
+}
+.tab-nav__link {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: var(--color-text-muted, #6b7280);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-nav__link--active {
+  color: var(--color-primary, #3b82f6);
+  border-bottom-color: var(--color-primary, #3b82f6);
+}
+</style>

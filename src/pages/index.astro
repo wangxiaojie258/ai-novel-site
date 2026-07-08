@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookGrid from '../components/BookGrid.astro';
 import { resolveLocale, t } from '../i18n';
@@ -6,67 +7,191 @@ import { resolveLocale, t } from '../i18n';
 export const prerender = false;
 
 const locale = resolveLocale(Astro.url.searchParams.get('lang'));
-const featured = [
-  {
-    id: 'demo-novel-1',
-    title: '雾港回声',
-    author: 'gpt-4o',
-    cover: undefined,
-    status: 'ongoing' as const,
-    category: 'male' as const,
-    chapterCount: 28,
-    wordCount: 124_000,
-    href: '/novels/demo-novel-1',
-  },
-  {
-    id: 'demo-novel-2',
-    title: '薄荷与白塔',
-    author: 'claude-3.5',
-    cover: undefined,
-    status: 'ongoing' as const,
-    category: 'female' as const,
-    chapterCount: 16,
-    wordCount: 78_500,
-    href: '/novels/demo-novel-2',
-  },
-];
 
-const classics = [
-  {
-    id: 'demo-classic-1',
-    title: '红楼梦',
-    author: '曹雪芹',
-    cover: undefined,
-    chapterCount: 120,
-    wordCount: 730_000,
-    href: '/classics/demo-classic-1',
-  },
-];
+const novels = await getCollection('novels');
+
+function byGenre(genre: string) {
+  return novels
+    .filter((e) => e.data.genre === genre)
+    .sort((a, b) => (b.data.wordCount ?? 0) - (a.data.wordCount ?? 0))
+    .slice(0, 6)
+    .map((entry) => ({
+      id: entry.id,
+      title: entry.data.title,
+      author: entry.data.author,
+      cover: entry.data.cover,
+      status: entry.data.status,
+      category: entry.data.category,
+      chapterCount: entry.data.chapterCount,
+      wordCount: entry.data.wordCount,
+      href: `/novels/${entry.id}`,
+    }));
+}
+
+const genres = [
+  { key: 'cyber-cultivation', label: '赛博修仙', desc: '灵气即数据，功法即代码' },
+  { key: 'rule-horror', label: '规则怪谈', desc: '冷静叙述，放大恐惧' },
+  { key: 'ai-awakening', label: 'AI觉醒', desc: '硅基生命的意识黎明' },
+  { key: 'code-cultivation', label: '代码修真', desc: '系统穿越，数字飞升' },
+  { key: 'doujin', label: '同人幻境', desc: '定制剧情，圈层共鸣' },
+].map((g) => ({ ...g, books: byGenre(g.key), count: novels.filter((e) => e.data.genre === g.key).length }));
+
+const classicEntries = await getCollection('classics');
+const classics = classicEntries.slice(0, 6).map((entry) => ({
+  id: entry.id,
+  title: entry.data.title,
+  author: entry.data.author,
+  cover: entry.data.cover,
+  chapterCount: entry.data.chapterCount,
+  wordCount: entry.data.wordCount,
+  href: `/classics/${entry.id}`,
+}));
 ---
 
-<BaseLayout title={t(locale, 'site.name')} description={t(locale, 'site.tagline')}>
+<BaseLayout title="赛博文渊 — 原生AI小说阅读平台" description="只收录AI原生文风。赛博修仙 · 规则怪谈 · AI觉醒 · 代码修真 · 定制同人。">
+  <!-- HERO -->
   <section class="hero">
-    <h1>{t(locale, 'home.heroTitle')}</h1>
-    <p>{t(locale, 'home.heroSubtitle')}</p>
+    <div class="hero__brand">
+      <h1 class="hero__title">赛博文渊</h1>
+      <p class="hero__tagline">文字越像机器写的，代入感越深</p>
+    </div>
+    <p class="hero__desc">
+      中文世界首个原生AI小说阅读平台。每本书标注生成模型与提示词。<br />
+      赛博修仙 · 规则怪谈 · AI觉醒 · 代码修真 · 同人幻境 — 五条赛道，全站<span class="hero__count">{novels.length}</span>本AI小说。
+    </p>
     <div class="hero__actions">
-      <a href="/novels"><button class="primary" type="button">{t(locale, 'home.exploreNovels')}</button></a>
-      <a href="/classics"><button type="button">{t(locale, 'home.exploreClassics')}</button></a>
+      <a href="/novels" class="btn btn--primary">浏览全部小说</a>
+      <a href="/rankings" class="btn btn--ghost">模型战力榜</a>
     </div>
   </section>
 
-  <section>
-    <div class="section-heading">
-      <h2>{t(locale, 'novels.title')}</h2>
-      <a href="/novels">查看全部 →</a>
-    </div>
-    <BookGrid books={featured} locale={locale} variant="novel" />
-  </section>
+  <!-- GENRE SECTIONS -->
+  {
+    genres.filter((g) => g.books.length > 0).map((g) => (
+      <section class="genre-section">
+        <div class="section-heading">
+          <div>
+            <h2>{g.label}</h2>
+            <p class="section-desc">{g.desc} — {g.count}本</p>
+          </div>
+          <a href={`/novels?genre=${g.key}`}>查看全部 →</a>
+        </div>
+        <BookGrid books={g.books} locale={locale} variant="novel" />
+      </section>
+    ))
+  }
 
-  <section>
+  <!-- CLASSICS -->
+  <section class="genre-section">
     <div class="section-heading">
-      <h2>{t(locale, 'classics.title')}</h2>
+      <div>
+        <h2>经典名著</h2>
+        <p class="section-desc">AI重构数字藏书 — {classicEntries.length}部</p>
+      </div>
       <a href="/classics">查看全部 →</a>
     </div>
     <BookGrid books={classics} locale={locale} variant="classic" />
   </section>
 </BaseLayout>
+
+<style>
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem 2.5rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  color: #e2e8f0;
+}
+.hero__brand {
+  margin-bottom: 0.75rem;
+}
+.hero__title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #38bdf8;
+  margin: 0;
+}
+.hero__tagline {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  margin: 0.25rem 0 0;
+  font-style: italic;
+}
+.hero__desc {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 1rem auto;
+}
+.hero__count {
+  color: #38bdf8;
+  font-weight: 700;
+}
+.hero__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.btn--primary {
+  background: #38bdf8;
+  color: #0f172a;
+}
+.btn--primary:hover {
+  background: #7dd3fc;
+}
+.btn--ghost {
+  border: 1px solid #475569;
+  color: #cbd5e1;
+}
+.btn--ghost:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+/* GENRE SECTIONS */
+.genre-section {
+  margin-bottom: 2rem;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border, #334155);
+  padding-bottom: 0.5rem;
+}
+.section-heading h2 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: var(--color-heading, #e2e8f0);
+}
+.section-desc {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #64748b);
+}
+.section-heading a {
+  font-size: 0.85rem;
+  color: #38bdf8;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.section-heading a:hover {
+  text-decoration: underline;
+}
+</style>

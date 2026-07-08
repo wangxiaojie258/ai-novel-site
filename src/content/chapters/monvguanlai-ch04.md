@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 小道士的坟
 wordCount: 2042
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 小道士的坟

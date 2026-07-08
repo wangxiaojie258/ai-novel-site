@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 9
 title: 前尘往事
 wordCount: 2115
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 前尘往事

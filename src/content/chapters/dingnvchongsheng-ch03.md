@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 妹妹的笑容
 wordCount: 1945
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 妹妹的笑容

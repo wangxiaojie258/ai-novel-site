@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 穿上军装
 wordCount: 1902
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 穿上军装

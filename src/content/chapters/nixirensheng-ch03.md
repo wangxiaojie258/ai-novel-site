@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 抓住了机会
 wordCount: 2512
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 抓住了机会

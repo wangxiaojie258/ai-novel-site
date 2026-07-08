@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 契约婚姻
 wordCount: 2570
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 契约婚姻

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 没有灵根的少年
 wordCount: 2339
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 没有灵根的少年

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 入宫前夕
 wordCount: 2580
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 入宫前夕

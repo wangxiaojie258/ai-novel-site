@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 前世之死
 wordCount: 2345
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 前世之死

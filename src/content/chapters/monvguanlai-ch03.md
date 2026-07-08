@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 白骨遍野
 wordCount: 2169
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 白骨遍野

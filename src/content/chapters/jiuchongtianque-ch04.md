@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 初入宗门
 wordCount: 2336
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 初入宗门

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 6
 title: 身份曝光
 wordCount: 1800
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 身份曝光

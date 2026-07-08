@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 末日前的电话
 wordCount: 2625
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 末日前的电话

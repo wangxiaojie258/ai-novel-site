@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 毕业晚会
 wordCount: 2578
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 毕业晚会

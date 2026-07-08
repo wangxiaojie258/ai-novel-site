@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 外门杂役
 wordCount: 2336
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 外门杂役

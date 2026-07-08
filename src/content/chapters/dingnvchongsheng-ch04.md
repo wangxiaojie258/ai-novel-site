@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 退婚那天
 wordCount: 2354
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 退婚那天

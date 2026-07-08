@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 异世界连锁
 wordCount: 3070
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 异世界连锁

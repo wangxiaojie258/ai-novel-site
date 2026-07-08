@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 破晓机甲
 wordCount: 2535
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 破晓机甲

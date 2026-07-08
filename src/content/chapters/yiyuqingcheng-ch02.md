@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 地铁上的重逢
 wordCount: 2335
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 地铁上的重逢

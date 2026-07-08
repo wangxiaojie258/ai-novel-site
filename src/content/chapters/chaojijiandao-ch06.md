@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 6
 title: 第一次曝光
 wordCount: 2894
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 第一次曝光

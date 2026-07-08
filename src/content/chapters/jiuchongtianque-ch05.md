@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 退婚之夜
 wordCount: 2308
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 退婚之夜

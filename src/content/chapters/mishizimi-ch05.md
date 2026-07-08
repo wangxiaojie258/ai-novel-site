@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 尘埃落定
 wordCount: 2414
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 尘埃落定

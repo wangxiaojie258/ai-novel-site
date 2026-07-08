@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 紫禁城一日游
 wordCount: 2463
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 紫禁城一日游

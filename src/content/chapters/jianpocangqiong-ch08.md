@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 8
 title: 登天梯
 wordCount: 2188
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 登天梯

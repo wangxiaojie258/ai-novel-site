@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 合租室友
 wordCount: 2214
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 合租室友

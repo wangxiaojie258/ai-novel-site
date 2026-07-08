@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 穷秀才
 wordCount: 2921
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 穷秀才

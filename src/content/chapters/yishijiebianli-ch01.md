@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 失业的那一天
 wordCount: 2471
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 失业的那一天

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 原来你也在这里
 wordCount: 2197
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 原来你也在这里

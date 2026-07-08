@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 深夜来客
 wordCount: 2068
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 深夜来客

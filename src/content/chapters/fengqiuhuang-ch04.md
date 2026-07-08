@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 月下对话
 wordCount: 1985
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 月下对话

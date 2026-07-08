@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 病毒的爆发
 wordCount: 2488
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 病毒的爆发

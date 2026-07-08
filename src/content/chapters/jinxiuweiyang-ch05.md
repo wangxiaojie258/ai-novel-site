@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 前世仇人
 wordCount: 2363
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 前世仇人

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 不可能的犯罪
 wordCount: 2355
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 不可能的犯罪

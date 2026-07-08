@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 大逃杀
 wordCount: 2341
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 大逃杀

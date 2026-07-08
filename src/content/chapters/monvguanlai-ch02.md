@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 红衣出关
 wordCount: 1950
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 红衣出关

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 当年的秘密
 wordCount: 2351
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 当年的秘密

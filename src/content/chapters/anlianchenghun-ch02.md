@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 人群里那个身影
 wordCount: 2136
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 人群里那个身影

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 崇祯登基
 wordCount: 2705
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 崇祯登基

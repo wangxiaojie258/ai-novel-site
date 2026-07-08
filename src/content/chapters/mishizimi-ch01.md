@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 四层别墅
 wordCount: 3026
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 四层别墅

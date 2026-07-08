@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 凤冠还在
 wordCount: 2666
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 凤冠还在

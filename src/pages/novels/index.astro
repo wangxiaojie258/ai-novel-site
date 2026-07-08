@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookGrid from '../../components/BookGrid.astro';
 import CategoryNav from '../../components/CategoryNav.astro';
@@ -18,12 +19,17 @@ const categories = [
   { key: 'general', label: t(locale, 'novels.category.general'), href: '/novels?category=general' },
 ];
 
-// Skeleton data — will be replaced by `getCollection('novels')`.
-const allBooks = [
-  { id: 'demo-novel-1', title: '雾港回声', author: 'gpt-4o', status: 'ongoing' as const, category: 'male' as const, chapterCount: 28, wordCount: 124_000, href: '/novels/demo-novel-1' },
-  { id: 'demo-novel-2', title: '薄荷与白塔', author: 'claude-3.5', status: 'ongoing' as const, category: 'female' as const, chapterCount: 16, wordCount: 78_500, href: '/novels/demo-novel-2' },
-  { id: 'demo-novel-3', title: '云上的工程师', author: 'deepseek-v3', status: 'completed' as const, category: 'general' as const, chapterCount: 42, wordCount: 196_300, href: '/novels/demo-novel-3' },
-];
+const novels = await getCollection('novels');
+const allBooks = novels.map((entry) => ({
+  id: entry.id,
+  title: entry.data.title,
+  author: entry.data.author,
+  status: entry.data.status,
+  category: entry.data.category,
+  chapterCount: entry.data.chapterCount,
+  wordCount: entry.data.wordCount,
+  href: `/novels/${entry.id}`,
+}));
 
 const filtered = allBooks.filter((b) => {
   if (activeCategory && b.category !== activeCategory) return false;

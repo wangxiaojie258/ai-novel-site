@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 救援任务
 wordCount: 2557
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 救援任务

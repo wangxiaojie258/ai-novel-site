@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 不会魔法的少年
 wordCount: 3024
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 不会魔法的少年

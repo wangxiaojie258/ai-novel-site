@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { resolveLocale, t } from '../../i18n';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+
+const novels = await getCollection('novels');
+
+// Group by author (AI model name) and count novels
+const modelMap = new Map<string, { id: string; name: string; novelCount: number }>();
+for (const entry of novels) {
+  const model = entry.data.author;
+  if (!modelMap.has(model)) {
+    modelMap.set(model, { id: encodeURIComponent(model), name: model, novelCount: 0 });
+  }
+  modelMap.get(model)!.novelCount++;
+}
+
+const models = Array.from(modelMap.values()).sort((a, b) => b.novelCount - a.novelCount);
+---
+
+<BaseLayout title={t(locale, 'aiCreators.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'aiCreators.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'aiCreators.subtitle')}</p>
+
+    <div class="book-grid">
+      {
+        models.map((m) => (
+          <a class="book-card" href={`/ai-creators/${m.id}`}>
+            <div class="book-card__cover"><span>{m.name}</span></div>
+            <div class="book-card__body">
+              <div class="book-card__title">{m.name}</div>
+              <div class="book-card__meta">
+                <span>· 作品 {m.novelCount}</span>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

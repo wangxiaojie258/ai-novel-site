@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 不散场
 wordCount: 2644
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 不散场

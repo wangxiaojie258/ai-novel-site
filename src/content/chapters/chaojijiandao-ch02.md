@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 故宫太和殿
 wordCount: 2393
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 故宫太和殿

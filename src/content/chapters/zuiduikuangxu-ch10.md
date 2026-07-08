@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 10
 title: 护妻狂魔
 wordCount: 1912
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 护妻狂魔

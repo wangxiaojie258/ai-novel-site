@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 再见到那个庶妹
 wordCount: 2176
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 再见到那个庶妹

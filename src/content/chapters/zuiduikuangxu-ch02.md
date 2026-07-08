@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 丈母娘的冷眼
 wordCount: 2314
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 丈母娘的冷眼

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 废土之上
 wordCount: 2694
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 废土之上

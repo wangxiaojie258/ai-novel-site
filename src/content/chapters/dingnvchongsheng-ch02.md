@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 嫡女归来
 wordCount: 2509
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 嫡女归来

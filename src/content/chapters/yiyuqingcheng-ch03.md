@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 巷口的少年
 wordCount: 2569
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 巷口的少年

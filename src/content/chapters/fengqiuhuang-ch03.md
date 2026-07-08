@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 驸马换人
 wordCount: 2392
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 驸马换人

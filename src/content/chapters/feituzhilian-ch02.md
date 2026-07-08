@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 雨天的陌生人
 wordCount: 2640
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 雨天的陌生人

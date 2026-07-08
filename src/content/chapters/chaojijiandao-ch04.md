@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 长城签到
 wordCount: 2524
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 长城签到

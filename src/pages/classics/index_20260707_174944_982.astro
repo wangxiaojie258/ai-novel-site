@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookGrid from '../../components/BookGrid.astro';
+import { resolveLocale, t } from '../../i18n';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+
+const allClassics = await getCollection('classics');
+
+const classics = allClassics.map((entry) => ({
+  id: entry.id,
+  title: entry.data.title,
+  author: entry.data.author,
+  cover: entry.data.cover,
+  chapterCount: entry.data.chapterCount,
+  wordCount: entry.data.wordCount,
+  href: `/classics/${entry.id}`,
+}));
+---
+
+<BaseLayout title={t(locale, 'classics.title')}>
+  <div class="page">
+    <h1 class="page__title">{t(locale, 'classics.title')}</h1>
+    <p class="page__subtitle">{t(locale, 'classics.subtitle')}</p>
+    <BookGrid books={classics} locale={locale} variant="classic" emptyText="No classics yet." />
+  </div>
+</BaseLayout>

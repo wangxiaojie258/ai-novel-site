@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 讲笑话入学
 wordCount: 3143
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 讲笑话入学

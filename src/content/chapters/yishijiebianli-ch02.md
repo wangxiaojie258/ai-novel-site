@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 开一家便利店
 wordCount: 3040
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 开一家便利店

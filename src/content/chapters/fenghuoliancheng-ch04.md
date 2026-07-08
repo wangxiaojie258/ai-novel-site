@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 淞沪会战
 wordCount: 2276
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 淞沪会战

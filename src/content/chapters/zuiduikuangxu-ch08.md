@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 8
 title: 红颜知己
 wordCount: 2242
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 红颜知己

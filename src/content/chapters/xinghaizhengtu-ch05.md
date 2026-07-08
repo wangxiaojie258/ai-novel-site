@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 虫族来袭
 wordCount: 2343
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 虫族来袭

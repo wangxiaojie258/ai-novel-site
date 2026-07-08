@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 初识BAT
 wordCount: 2375
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 初识BAT

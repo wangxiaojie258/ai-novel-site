@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 10
 title: 系统升级
 wordCount: 2917
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 系统升级

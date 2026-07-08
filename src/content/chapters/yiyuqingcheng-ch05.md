@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 一遇倾城
 wordCount: 2188
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 一遇倾城

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 将军的赏识
 wordCount: 2180
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 将军的赏识

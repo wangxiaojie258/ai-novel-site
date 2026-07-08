@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 5
 title: 日常继续
 wordCount: 3424
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 日常继续

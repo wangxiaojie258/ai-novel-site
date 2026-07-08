@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 3
 title: 活过今夜
 wordCount: 2615
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 活过今夜

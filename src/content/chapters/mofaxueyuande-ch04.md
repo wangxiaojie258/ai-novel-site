@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 吐槽大会
 wordCount: 2827
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 吐槽大会

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 6
 title: 剑意如潮
 wordCount: 2092
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 剑意如潮

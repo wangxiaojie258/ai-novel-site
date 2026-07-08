@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 历劫千年
 wordCount: 2051
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 历劫千年

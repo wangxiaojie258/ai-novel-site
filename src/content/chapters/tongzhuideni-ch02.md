@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 他送的礼物
 wordCount: 2188
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 他送的礼物

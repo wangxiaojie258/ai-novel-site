@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 4
 title: 关东煮和女剑士
 wordCount: 3077
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 关东煮和女剑士

@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 2
 title: 万古剑体
 wordCount: 2072
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 万古剑体

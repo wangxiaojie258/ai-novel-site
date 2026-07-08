@@ -9,7 +9,7 @@ import en from './src/i18n/en.json';
 const messages = { zh, en };
 
 export default defineConfig({
-  site: 'https://freewan.bbroot.com',
+  site: 'https://aibooks.cc.cd',
   output: 'server',
   adapter: cloudflare({
     platformProxy: { enabled: true },

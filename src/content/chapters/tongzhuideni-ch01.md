@@ -4,7 +4,7 @@ volume: 第一卷
 chapterNumber: 1
 title: 高一同桌
 wordCount: 2581
-publishDate: 2026-07-07
+publishDate: '2026-07-07'
 ---
 
 ## 高一同桌
