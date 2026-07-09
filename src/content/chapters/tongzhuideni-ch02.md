@@ -1,5 +1,5 @@
 ---
-novelId: tongzhuideni
+novelId: tongzhuideni.md
 volume: 第一卷
 chapterNumber: 2
 title: 他送的礼物

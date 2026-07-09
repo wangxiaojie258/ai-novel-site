@@ -1,5 +1,5 @@
 ---
-novelId: yiyuqingcheng
+novelId: yiyuqingcheng.md
 volume: 第一卷
 chapterNumber: 1
 title: 北漂第六年

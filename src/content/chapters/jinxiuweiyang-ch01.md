@@ -1,5 +1,5 @@
 ---
-novelId: jinxiuweiyang
+novelId: jinxiuweiyang.md
 volume: 第一卷
 chapterNumber: 1
 title: 重生那一天

@@ -1,5 +1,5 @@
 ---
-novelId: mofaxueyuande
+novelId: mofaxueyuande.md
 volume: 第一卷
 chapterNumber: 1
 title: 不会魔法的少年

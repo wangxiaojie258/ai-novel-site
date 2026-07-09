@@ -1,5 +1,5 @@
 ---
-novelId: moshijianglin
+novelId: moshijianglin.md
 volume: 第一卷
 chapterNumber: 5
 title: 第一战

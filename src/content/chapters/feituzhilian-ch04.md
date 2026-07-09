@@ -1,5 +1,5 @@
 ---
-novelId: feituzhilian
+novelId: feituzhilian.md
 volume: 第一卷
 chapterNumber: 4
 title: 他的过去

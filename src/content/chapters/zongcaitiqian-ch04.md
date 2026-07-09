@@ -1,5 +1,5 @@
 ---
-novelId: zongcaitiqian
+novelId: zongcaitiqian.md
 volume: 第一卷
 chapterNumber: 4
 title: 冷漠的他

@@ -1,5 +1,5 @@
 ---
-novelId: feituzhilian
+novelId: feituzhilian.md
 volume: 第一卷
 chapterNumber: 3
 title: 跟我走吧

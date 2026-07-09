@@ -1,5 +1,5 @@
 ---
-novelId: chaojijiandao
+novelId: chaojijiandao.md
 volume: 第一卷
 chapterNumber: 7
 title: 富豪圈震动

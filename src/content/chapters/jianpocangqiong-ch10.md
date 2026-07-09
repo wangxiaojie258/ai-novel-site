@@ -1,5 +1,5 @@
 ---
-novelId: jianpocangqiong
+novelId: jianpocangqiong.md
 volume: 第一卷
 chapterNumber: 10
 title: 天骄榜

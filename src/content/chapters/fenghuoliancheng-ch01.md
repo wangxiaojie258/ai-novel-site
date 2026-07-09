@@ -1,5 +1,5 @@
 ---
-novelId: fenghuoliancheng
+novelId: fenghuoliancheng.md
 volume: 第一卷
 chapterNumber: 1
 title: 上海滩的枪声

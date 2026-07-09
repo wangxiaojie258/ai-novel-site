@@ -1,5 +1,5 @@
 ---
-novelId: tiexueshanhe
+novelId: tiexueshanhe.md
 volume: 第一卷
 chapterNumber: 3
 title: 将军的赏识

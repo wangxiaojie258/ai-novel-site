@@ -1,5 +1,5 @@
 ---
-novelId: moshinvwang
+novelId: moshinvwang.md
 volume: 第一卷
 chapterNumber: 4
 title: 末世求生

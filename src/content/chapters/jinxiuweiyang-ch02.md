@@ -1,5 +1,5 @@
 ---
-novelId: jinxiuweiyang
+novelId: jinxiuweiyang.md
 volume: 第一卷
 chapterNumber: 2
 title: 再见到那个庶妹

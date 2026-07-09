@@ -1,5 +1,5 @@
 ---
-novelId: nixirensheng
+novelId: nixirensheng.md
 volume: 第一卷
 chapterNumber: 5
 title: 失败与重生

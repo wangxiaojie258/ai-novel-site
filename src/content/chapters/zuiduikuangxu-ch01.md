@@ -1,5 +1,5 @@
 ---
-novelId: zuiduikuangxu
+novelId: zuiduikuangxu.md
 volume: 第一卷
 chapterNumber: 1
 title: 上门女婿的第一天

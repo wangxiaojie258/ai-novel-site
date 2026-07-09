@@ -1,5 +1,5 @@
 ---
-novelId: monvguanlai
+novelId: monvguanlai.md
 volume: 第一卷
 chapterNumber: 5
 title: 并肩

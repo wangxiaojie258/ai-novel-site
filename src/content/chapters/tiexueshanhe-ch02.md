@@ -1,5 +1,5 @@
 ---
-novelId: tiexueshanhe
+novelId: tiexueshanhe.md
 volume: 第一卷
 chapterNumber: 2
 title: 第一次上战场

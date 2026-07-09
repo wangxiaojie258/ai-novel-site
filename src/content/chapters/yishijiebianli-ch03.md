@@ -1,5 +1,5 @@
 ---
-novelId: yishijiebianli
+novelId: yishijiebianli.md
 volume: 第一卷
 chapterNumber: 3
 title: 第一个顾客

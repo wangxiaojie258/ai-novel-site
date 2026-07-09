@@ -1,5 +1,5 @@
 ---
-novelId: zongcaitiqian
+novelId: zongcaitiqian.md
 volume: 第一卷
 chapterNumber: 5
 title: 三年之期

@@ -1,5 +1,5 @@
 ---
-novelId: dingnvchongsheng
+novelId: dingnvchongsheng.md
 volume: 第一卷
 chapterNumber: 3
 title: 妹妹的笑容

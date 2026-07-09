@@ -1,5 +1,5 @@
 ---
-novelId: mishizimi
+novelId: mishizimi.md
 volume: 第一卷
 chapterNumber: 4
 title: 第三个人

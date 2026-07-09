@@ -1,5 +1,5 @@
 ---
-novelId: zhongshengshangye
+novelId: zhongshengshangye.md
 volume: 第一卷
 chapterNumber: 3
 title: 第一桶金

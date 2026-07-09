@@ -1,5 +1,5 @@
 ---
-novelId: tiexueshanhe
+novelId: tiexueshanhe.md
 volume: 第一卷
 chapterNumber: 1
 title: 边关小卒

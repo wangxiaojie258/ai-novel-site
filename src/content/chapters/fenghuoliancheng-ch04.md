@@ -1,5 +1,5 @@
 ---
-novelId: fenghuoliancheng
+novelId: fenghuoliancheng.md
 volume: 第一卷
 chapterNumber: 4
 title: 淞沪会战

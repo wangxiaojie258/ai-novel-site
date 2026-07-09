@@ -1,5 +1,5 @@
 ---
-novelId: tongzhuideni
+novelId: tongzhuideni.md
 volume: 第一卷
 chapterNumber: 3
 title: 那封信

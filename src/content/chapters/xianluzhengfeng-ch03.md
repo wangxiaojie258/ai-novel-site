@@ -1,5 +1,5 @@
 ---
-novelId: xianluzhengfeng
+novelId: xianluzhengfeng.md
 volume: 第一卷
 chapterNumber: 3
 title: 外门杂役

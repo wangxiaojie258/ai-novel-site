@@ -1,5 +1,5 @@
 ---
-novelId: yiyuqingcheng
+novelId: yiyuqingcheng.md
 volume: 第一卷
 chapterNumber: 5
 title: 一遇倾城

@@ -1,5 +1,5 @@
 ---
-novelId: chaojijiandao
+novelId: chaojijiandao.md
 volume: 第一卷
 chapterNumber: 3
 title: 紫禁城一日游

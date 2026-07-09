@@ -1,5 +1,5 @@
 ---
-novelId: chaojijiandao
+novelId: chaojijiandao.md
 volume: 第一卷
 chapterNumber: 8
 title: 国家台采访

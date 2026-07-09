@@ -1,5 +1,5 @@
 ---
-novelId: anlianchenghun
+novelId: anlianchenghun.md
 volume: 第一卷
 chapterNumber: 2
 title: 人群里那个身影

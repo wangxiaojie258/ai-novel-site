@@ -1,5 +1,5 @@
 ---
-novelId: chaojijiandao
+novelId: chaojijiandao.md
 volume: 第一卷
 chapterNumber: 10
 title: 系统升级

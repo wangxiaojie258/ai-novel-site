@@ -1,5 +1,5 @@
 ---
-novelId: anlianchenghun
+novelId: anlianchenghun.md
 volume: 第一卷
 chapterNumber: 5
 title: 他求婚了

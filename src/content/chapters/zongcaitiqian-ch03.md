@@ -1,5 +1,5 @@
 ---
-novelId: zongcaitiqian
+novelId: zongcaitiqian.md
 volume: 第一卷
 chapterNumber: 3
 title: 替身的第一年

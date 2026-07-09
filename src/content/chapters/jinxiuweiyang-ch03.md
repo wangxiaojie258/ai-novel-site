@@ -1,5 +1,5 @@
 ---
-novelId: jinxiuweiyang
+novelId: jinxiuweiyang.md
 volume: 第一卷
 chapterNumber: 3
 title: 第一步

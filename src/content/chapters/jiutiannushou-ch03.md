@@ -1,5 +1,5 @@
 ---
-novelId: jiutiannushou
+novelId: jiutiannushou.md
 volume: 第一卷
 chapterNumber: 3
 title: 魔界少主

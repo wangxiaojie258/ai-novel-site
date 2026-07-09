@@ -1,5 +1,5 @@
 ---
-novelId: anlianchenghun
+novelId: anlianchenghun.md
 volume: 第一卷
 chapterNumber: 1
 title: 十年后的婚礼彩排

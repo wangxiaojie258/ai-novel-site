@@ -1,5 +1,5 @@
 ---
-novelId: lunhuikongjian
+novelId: lunhuikongjian.md
 volume: 第一卷
 chapterNumber: 4
 title: 厉鬼出现

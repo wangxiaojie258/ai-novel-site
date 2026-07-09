@@ -1,5 +1,5 @@
 ---
-novelId: anlianchenghun
+novelId: anlianchenghun.md
 volume: 第一卷
 chapterNumber: 3
 title: 原来你也在这里

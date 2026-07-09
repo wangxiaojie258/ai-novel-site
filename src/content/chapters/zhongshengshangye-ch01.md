@@ -1,5 +1,5 @@
 ---
-novelId: zhongshengshangye
+novelId: zhongshengshangye.md
 volume: 第一卷
 chapterNumber: 1
 title: 醒来2003

@@ -1,5 +1,5 @@
 ---
-novelId: yiyuqingcheng
+novelId: yiyuqingcheng.md
 volume: 第一卷
 chapterNumber: 2
 title: 地铁上的重逢

@@ -1,5 +1,5 @@
 ---
-novelId: mofaxueyuande
+novelId: mofaxueyuande.md
 volume: 第一卷
 chapterNumber: 4
 title: 吐槽大会

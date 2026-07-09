@@ -1,5 +1,5 @@
 ---
-novelId: mishizimi
+novelId: mishizimi.md
 volume: 第一卷
 chapterNumber: 2
 title: 反锁的密室

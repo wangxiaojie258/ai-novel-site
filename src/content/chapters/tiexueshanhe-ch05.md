@@ -1,5 +1,5 @@
 ---
-novelId: tiexueshanhe
+novelId: tiexueshanhe.md
 volume: 第一卷
 chapterNumber: 5
 title: 镇北大将军

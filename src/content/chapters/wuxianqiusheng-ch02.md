@@ -1,5 +1,5 @@
 ---
-novelId: wuxianqiusheng
+novelId: wuxianqiusheng.md
 volume: 第一卷
 chapterNumber: 2
 title: 第一个副本

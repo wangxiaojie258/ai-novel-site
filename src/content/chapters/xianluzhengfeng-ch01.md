@@ -1,5 +1,5 @@
 ---
-novelId: xianluzhengfeng
+novelId: xianluzhengfeng.md
 volume: 第一卷
 chapterNumber: 1
 title: 没有灵根的少年

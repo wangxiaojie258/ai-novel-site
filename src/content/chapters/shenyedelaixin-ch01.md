@@ -1,5 +1,5 @@
 ---
-novelId: shenyedelaixin
+novelId: shenyedelaixin.md
 volume: 第一卷
 chapterNumber: 1
 title: 深夜十一点的信

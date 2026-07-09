@@ -1,5 +1,5 @@
 ---
-novelId: fenghuoliancheng
+novelId: fenghuoliancheng.md
 volume: 第一卷
 chapterNumber: 3
 title: 穿上军装

@@ -1,5 +1,5 @@
 ---
-novelId: zuiduikuangxu
+novelId: zuiduikuangxu.md
 volume: 第一卷
 chapterNumber: 7
 title: 岳父母震惊

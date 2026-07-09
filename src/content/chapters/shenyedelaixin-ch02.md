@@ -1,5 +1,5 @@
 ---
-novelId: shenyedelaixin
+novelId: shenyedelaixin.md
 volume: 第一卷
 chapterNumber: 2
 title: 十二年前的雨夜

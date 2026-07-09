@@ -1,5 +1,5 @@
 ---
-novelId: lunhuikongjian
+novelId: lunhuikongjian.md
 volume: 第一卷
 chapterNumber: 5
 title: 通关

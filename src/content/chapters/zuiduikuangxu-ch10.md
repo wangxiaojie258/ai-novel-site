@@ -1,5 +1,5 @@
 ---
-novelId: zuiduikuangxu
+novelId: zuiduikuangxu.md
 volume: 第一卷
 chapterNumber: 10
 title: 护妻狂魔

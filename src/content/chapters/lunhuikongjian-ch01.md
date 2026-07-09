@@ -1,5 +1,5 @@
 ---
-novelId: lunhuikongjian
+novelId: lunhuikongjian.md
 volume: 第一卷
 chapterNumber: 1
 title: 欢迎来到轮回空间

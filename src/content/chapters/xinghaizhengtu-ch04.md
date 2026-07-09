@@ -1,5 +1,5 @@
 ---
-novelId: xinghaizhengtu
+novelId: xinghaizhengtu.md
 volume: 第一卷
 chapterNumber: 4
 title: 救援任务

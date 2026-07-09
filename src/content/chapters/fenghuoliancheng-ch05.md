@@ -1,5 +1,5 @@
 ---
-novelId: fenghuoliancheng
+novelId: fenghuoliancheng.md
 volume: 第一卷
 chapterNumber: 5
 title: 生死一线

@@ -1,5 +1,5 @@
 ---
-novelId: lunhuikongjian
+novelId: lunhuikongjian.md
 volume: 第一卷
 chapterNumber: 3
 title: 活过今夜

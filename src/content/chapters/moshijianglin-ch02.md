@@ -1,5 +1,5 @@
 ---
-novelId: moshijianglin
+novelId: moshijianglin.md
 volume: 第一卷
 chapterNumber: 2
 title: 病毒的爆发

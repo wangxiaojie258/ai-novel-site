@@ -1,5 +1,5 @@
 ---
-novelId: yiyuqingcheng
+novelId: yiyuqingcheng.md
 volume: 第一卷
 chapterNumber: 4
 title: 合租室友

@@ -1,5 +1,5 @@
 ---
-novelId: mishizimi
+novelId: mishizimi.md
 volume: 第一卷
 chapterNumber: 3
 title: 不可能的犯罪

@@ -1,5 +1,5 @@
 ---
-novelId: zhongshengshangye
+novelId: zhongshengshangye.md
 volume: 第一卷
 chapterNumber: 2
 title: 校园地摊

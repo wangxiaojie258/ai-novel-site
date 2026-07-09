@@ -1,5 +1,5 @@
 ---
-novelId: qingchunbusanchang
+novelId: qingchunbusanchang.md
 volume: 第一卷
 chapterNumber: 5
 title: 不散场

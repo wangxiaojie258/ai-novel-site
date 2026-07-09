@@ -1,5 +1,5 @@
 ---
-novelId: zhongshengshangye
+novelId: zhongshengshangye.md
 volume: 第一卷
 chapterNumber: 5
 title: 风云际会

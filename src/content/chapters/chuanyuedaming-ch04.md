@@ -1,5 +1,5 @@
 ---
-novelId: chuanyuedaming
+novelId: chuanyuedaming.md
 volume: 第一卷
 chapterNumber: 4
 title: 山雨欲来

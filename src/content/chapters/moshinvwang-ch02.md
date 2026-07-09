@@ -1,5 +1,5 @@
 ---
-novelId: moshinvwang
+novelId: moshinvwang.md
 volume: 第一卷
 chapterNumber: 2
 title: 重生

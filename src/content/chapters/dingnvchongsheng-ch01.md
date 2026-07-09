@@ -1,5 +1,5 @@
 ---
-novelId: dingnvchongsheng
+novelId: dingnvchongsheng.md
 volume: 第一卷
 chapterNumber: 1
 title: 重生回未嫁之年

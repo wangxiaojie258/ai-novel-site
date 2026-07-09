@@ -1,5 +1,5 @@
 ---
-novelId: feituzhilian
+novelId: feituzhilian.md
 volume: 第一卷
 chapterNumber: 5
 title: 废土之恋

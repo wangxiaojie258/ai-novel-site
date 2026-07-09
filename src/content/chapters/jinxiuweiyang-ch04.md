@@ -1,5 +1,5 @@
 ---
-novelId: jinxiuweiyang
+novelId: jinxiuweiyang.md
 volume: 第一卷
 chapterNumber: 4
 title: 重掌中馈

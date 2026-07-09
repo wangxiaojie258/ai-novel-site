@@ -1,5 +1,5 @@
 ---
-novelId: jianpocangqiong
+novelId: jianpocangqiong.md
 volume: 第一卷
 chapterNumber: 7
 title: 一剑封喉

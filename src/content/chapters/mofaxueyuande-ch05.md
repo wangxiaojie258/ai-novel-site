@@ -1,5 +1,5 @@
 ---
-novelId: mofaxueyuande
+novelId: mofaxueyuande.md
 volume: 第一卷
 chapterNumber: 5
 title: 日常继续

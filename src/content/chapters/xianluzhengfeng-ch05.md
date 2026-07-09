@@ -1,5 +1,5 @@
 ---
-novelId: xianluzhengfeng
+novelId: xianluzhengfeng.md
 volume: 第一卷
 chapterNumber: 5
 title: 暗藏的传承

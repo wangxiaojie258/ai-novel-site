@@ -1,5 +1,5 @@
 ---
-novelId: chuanyuedaming
+novelId: chuanyuedaming.md
 volume: 第一卷
 chapterNumber: 5
 title: 崇祯登基

@@ -1,5 +1,5 @@
 ---
-novelId: dingnvchongsheng
+novelId: dingnvchongsheng.md
 volume: 第一卷
 chapterNumber: 5
 title: 入宫前夕

@@ -1,5 +1,5 @@
 ---
-novelId: nixirensheng
+novelId: nixirensheng.md
 volume: 第一卷
 chapterNumber: 4
 title: 创业第一步

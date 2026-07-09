@@ -1,5 +1,5 @@
 ---
-novelId: mofaxueyuande
+novelId: mofaxueyuande.md
 volume: 第一卷
 chapterNumber: 2
 title: 讲笑话入学

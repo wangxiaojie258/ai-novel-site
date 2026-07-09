@@ -1,5 +1,5 @@
 ---
-novelId: xinghaizhengtu
+novelId: xinghaizhengtu.md
 volume: 第一卷
 chapterNumber: 1
 title: 异星降临

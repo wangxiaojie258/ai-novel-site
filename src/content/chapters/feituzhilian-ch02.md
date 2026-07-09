@@ -1,5 +1,5 @@
 ---
-novelId: feituzhilian
+novelId: feituzhilian.md
 volume: 第一卷
 chapterNumber: 2
 title: 雨天的陌生人

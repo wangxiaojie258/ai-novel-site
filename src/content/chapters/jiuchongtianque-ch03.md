@@ -1,5 +1,5 @@
 ---
-novelId: jiuchongtianque
+novelId: jiuchongtianque.md
 volume: 第一卷
 chapterNumber: 3
 title: 师父的告诫

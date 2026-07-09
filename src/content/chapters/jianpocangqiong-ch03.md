@@ -1,5 +1,5 @@
 ---
-novelId: jianpocangqiong
+novelId: jianpocangqiong.md
 volume: 第一卷
 chapterNumber: 3
 title: 下山

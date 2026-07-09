@@ -1,5 +1,5 @@
 ---
-novelId: jianpocangqiong
+novelId: jianpocangqiong.md
 volume: 第一卷
 chapterNumber: 1
 title: 剑冢中醒来的少年

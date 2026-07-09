@@ -1,5 +1,5 @@
 ---
-novelId: fengqiuhuang
+novelId: fengqiuhuang.md
 volume: 第一卷
 chapterNumber: 3
 title: 驸马换人

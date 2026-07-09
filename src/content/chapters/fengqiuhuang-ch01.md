@@ -1,5 +1,5 @@
 ---
-novelId: fengqiuhuang
+novelId: fengqiuhuang.md
 volume: 第一卷
 chapterNumber: 1
 title: 和亲塞外

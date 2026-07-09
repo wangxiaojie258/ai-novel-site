@@ -1,5 +1,5 @@
 ---
-novelId: dingnvchongsheng
+novelId: dingnvchongsheng.md
 volume: 第一卷
 chapterNumber: 4
 title: 退婚那天

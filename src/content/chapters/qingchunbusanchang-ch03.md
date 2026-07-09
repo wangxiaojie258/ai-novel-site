@@ -1,5 +1,5 @@
 ---
-novelId: qingchunbusanchang
+novelId: qingchunbusanchang.md
 volume: 第一卷
 chapterNumber: 3
 title: 十年后重聚

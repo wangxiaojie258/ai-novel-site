@@ -1,5 +1,5 @@
 ---
-novelId: shenyedelaixin
+novelId: shenyedelaixin.md
 volume: 第一卷
 chapterNumber: 5
 title: 最后一封信

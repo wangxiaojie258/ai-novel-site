@@ -1,5 +1,5 @@
 ---
-novelId: wuxianqiusheng
+novelId: wuxianqiusheng.md
 volume: 第一卷
 chapterNumber: 1
 title: 门开的那一天

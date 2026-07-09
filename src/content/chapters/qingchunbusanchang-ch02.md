@@ -1,5 +1,5 @@
 ---
-novelId: qingchunbusanchang
+novelId: qingchunbusanchang.md
 volume: 第一卷
 chapterNumber: 2
 title: 四个女孩的约定

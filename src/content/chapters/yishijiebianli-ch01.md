@@ -1,5 +1,5 @@
 ---
-novelId: yishijiebianli
+novelId: yishijiebianli.md
 volume: 第一卷
 chapterNumber: 1
 title: 失业的那一天

@@ -1,5 +1,5 @@
 ---
-novelId: moshinvwang
+novelId: moshinvwang.md
 volume: 第一卷
 chapterNumber: 1
 title: 前世之死

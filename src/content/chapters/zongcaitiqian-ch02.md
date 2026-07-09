@@ -1,5 +1,5 @@
 ---
-novelId: zongcaitiqian
+novelId: zongcaitiqian.md
 volume: 第一卷
 chapterNumber: 2
 title: 白月光的照片

@@ -1,5 +1,5 @@
 ---
-novelId: xianluzhengfeng
+novelId: xianluzhengfeng.md
 volume: 第一卷
 chapterNumber: 2
 title: 意外踏入仙门
