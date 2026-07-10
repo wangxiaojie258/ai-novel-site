@@ -160,7 +160,7 @@ export async function hashPassword(plain: string): Promise<string> {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const key = await crypto.subtle.importKey('raw', encoder.encode(plain), 'PBKDF2', false, ['deriveBits']);
   const hash = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', salt, iterations: 600_000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt, iterations: 100_000, hash: 'SHA-256' },
     key,
     256,
   );
@@ -174,7 +174,7 @@ export async function verifyPassword(plain: string, hashed: string): Promise<boo
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey('raw', encoder.encode(plain), 'PBKDF2', false, ['deriveBits']);
   const hash = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', salt, iterations: 600_000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt, iterations: 100_000, hash: 'SHA-256' },
     key,
     256,
   );
