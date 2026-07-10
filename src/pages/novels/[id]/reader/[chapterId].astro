@@ -53,6 +53,17 @@ const chapterData = {
 };
 
 const bookTitle = novel.title;
+
+const session = (Astro.locals as Record<string, unknown>).session as
+  | { sub: string; role: string; username?: string }
+  | null;
+
+const chapterJson = JSON.stringify({
+  novelId: id,
+  chapterId: chapterId,
+  chapterNumber: chapterData.number,
+  chapterTitle: chapterData.title,
+});
 ---
 
 <BaseLayout title={`${chapterData.title} - ${bookTitle}`}>
@@ -74,3 +85,39 @@ const bookTitle = novel.title;
     />
   </div>
 </BaseLayout>
+
+{session && (
+  <script>
+    const ch = JSON.parse('{chapterJson}');
+    let saved = false;
+
+    function saveProgress() {
+      if (saved) return;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const position = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+
+      if (position < 10 && docHeight > 2000) return;
+
+      saved = true;
+      fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...ch, position }),
+      }).catch(() => { saved = false; });
+    }
+
+    // Save on scroll near bottom
+    let scrollTimer: ReturnType<typeof setTimeout>;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 300;
+        if (atBottom) saveProgress();
+      }, 500);
+    }, { passive: true });
+
+    // Save on page unload
+    window.addEventListener('beforeunload', saveProgress);
+  </script>
+)}

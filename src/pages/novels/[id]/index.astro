@@ -4,6 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ChapterList from '../../../components/ChapterList.astro';
 import CommentSection from '../../../components/CommentSection.astro';
 import { resolveLocale, t } from '../../../i18n';
+import { getProgress, isInBookshelf } from '../../../lib/db';
 
 export const prerender = false;
 
@@ -35,6 +36,33 @@ const chapterItems = novelChapters.map((c) => ({
 }));
 
 const firstChapterHref = chapterItems.length > 0 ? chapterItems[0].href : '#';
+
+// Session & bookshelf status
+const session = (Astro.locals as Record<string, unknown>).session as
+  | { sub: string; role: string; username?: string }
+  | null;
+
+let inBookshelf = false;
+let readingProgress: { chapter_id: string; chapter_number: number; chapter_title: string } | null = null;
+
+if (session) {
+  const db = (Astro.locals as Record<string, unknown>).runtime &&
+    ((Astro.locals as Record<string, unknown>).runtime as Record<string, unknown>).env
+    ? (((Astro.locals as Record<string, unknown>).runtime as Record<string, unknown>).env as Record<string, D1Database>).DB
+    : undefined;
+
+  if (db) {
+    inBookshelf = await isInBookshelf(db, session.sub, novelSlug);
+    const progress = await getProgress(db, session.sub, novelSlug);
+    if (progress) {
+      readingProgress = {
+        chapter_id: progress.chapter_id,
+        chapter_number: progress.chapter_number,
+        chapter_title: progress.chapter_title,
+      };
+    }
+  }
+}
 
 const bookUrl = `https://aibooks.cc.cd/novels/${novelSlug}`;
 const structuredData = {
@@ -77,6 +105,11 @@ const structuredData = {
           {t(locale, 'book.wordCount')}: {(novel.wordCount ?? 0).toLocaleString()} · {t(locale, 'book.chapters')}: {novel.chapterCount}
         </p>
         <p class="text-muted">{novel.category === 'male' ? '男频' : novel.category === 'female' ? '女频' : '通用'} · {novel.subcategory ?? ''}</p>
+        {readingProgress && (
+          <p class="progress-hint">
+            上次读到: <a href={`/novels/${novelSlug}/reader/${readingProgress.chapter_id}`}>第{readingProgress.chapter_number}章 {readingProgress.chapter_title}</a>
+          </p>
+        )}
       </div>
     </header>
 
@@ -102,8 +135,24 @@ const structuredData = {
     )}
 
     <div class="mt-2 mb-2 flex gap-1">
-      <a href={firstChapterHref}><button class="primary" type="button">{t(locale, 'book.startReading')}</button></a>
+      {readingProgress ? (
+        <a href={`/novels/${novelSlug}/reader/${readingProgress.chapter_id}`}><button class="primary" type="button">继续阅读 第{readingProgress.chapter_number}章</button></a>
+      ) : (
+        <a href={firstChapterHref}><button class="primary" type="button">{t(locale, 'book.startReading')}</button></a>
+      )}
       <a href="/novels"><button type="button">返回书库</button></a>
+      {session ? (
+        <button type="button" id="bookshelf-btn"
+          class={inBookshelf ? 'bookshelf-remove' : 'bookshelf-add'}
+          data-novel-id={novelSlug}
+          data-novel-title={novel.title}
+          data-novel-author={novel.author}
+          data-novel-cover={novel.cover ?? ''}>
+          {inBookshelf ? '移出书架' : '加入书架'}
+        </button>
+      ) : (
+        <a href="/login"><button type="button" class="bookshelf-login">登录后加入书架</button></a>
+      )}
     </div>
 
     <h2 class="text-muted">目录 ({novelChapters.length}章)</h2>
@@ -118,6 +167,44 @@ const structuredData = {
     />
   </article>
 </BaseLayout>
+
+<script>
+  const bookshelfBtn = document.getElementById('bookshelf-btn') as HTMLButtonElement;
+  if (bookshelfBtn) {
+    const novelId = bookshelfBtn.dataset.novelId || '';
+    const novelTitle = bookshelfBtn.dataset.novelTitle || '';
+    const novelAuthor = bookshelfBtn.dataset.novelAuthor || '';
+    const novelCover = bookshelfBtn.dataset.novelCover || '';
+    let inShelf = bookshelfBtn.classList.contains('bookshelf-remove');
+
+    bookshelfBtn.addEventListener('click', async () => {
+      const action = inShelf ? 'remove' : 'add';
+      bookshelfBtn.disabled = true;
+      bookshelfBtn.textContent = inShelf ? '移出中...' : '加入中...';
+
+      try {
+        const res = await fetch('/api/bookshelf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action,
+            novelId,
+            novelTitle,
+            novelAuthor,
+            novelCover,
+          }),
+        });
+        if (res.ok) {
+          inShelf = !inShelf;
+          bookshelfBtn.classList.toggle('bookshelf-remove', inShelf);
+          bookshelfBtn.classList.toggle('bookshelf-add', !inShelf);
+          bookshelfBtn.textContent = inShelf ? '移出书架' : '加入书架';
+        }
+      } catch {}
+      bookshelfBtn.disabled = false;
+    });
+  }
+</script>
 
 <style>
 .novel-header {
@@ -135,6 +222,31 @@ const structuredData = {
 .novel-meta {
   flex: 1;
 }
+.progress-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+}
+.progress-hint a {
+  color: var(--color-accent, #7c5cfc);
+  font-weight: 600;
+}
+.bookshelf-add, .bookshelf-remove, .bookshelf-login {
+  padding: 0.7rem 1.2rem;
+  border: 1px solid var(--color-border, #2a2a4a);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-surface, #1a1a2e);
+  color: var(--color-text, #e0e0e0);
+  transition: all 0.2s;
+}
+.bookshelf-add:hover { border-color: var(--color-accent, #7c5cfc); color: var(--color-accent, #7c5cfc); }
+.bookshelf-remove { border-color: #f87171; color: #f87171; }
+.bookshelf-remove:hover { background: rgba(248,113,113,0.1); }
+.bookshelf-login { color: var(--color-muted, #888); }
+.bookshelf-login:hover { border-color: var(--color-accent, #7c5cfc); color: var(--color-accent, #7c5cfc); }
+.bookshelf-add:disabled, .bookshelf-remove:disabled { opacity: 0.5; cursor: not-allowed; }
 @media (max-width: 600px) {
   .novel-header {
     flex-direction: column;
