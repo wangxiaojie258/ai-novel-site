@@ -1,9 +1,4 @@
 ---
-/**
- * CommentSection — top-level comment thread for a book/chapter.
- * Renders existing comments + a form. The form is non-functional in the
- * skeleton state; it posts to /api/comment (Workers route) when wired up.
- */
 import { DEFAULT_LOCALE, type Locale, t } from '../i18n';
 
 export interface CommentItem {
@@ -19,40 +14,118 @@ interface Props {
   targetId: string;
   locale?: Locale;
   loginRequired?: boolean;
+  isLoggedIn?: boolean;
 }
 
-const { comments, targetType, targetId, locale = DEFAULT_LOCALE, loginRequired = false } = Astro.props;
+const { comments, targetType, targetId, locale = DEFAULT_LOCALE, loginRequired = false, isLoggedIn = false } = Astro.props;
+const disabled = loginRequired && !isLoggedIn;
 ---
 
 <section class="comment-section" data-target-type={targetType} data-target-id={targetId}>
-  <form class="comment-form" data-comment-form>
+  <h3 class="comment-title">{t(locale, 'comment.title') || '评论'}</h3>
+  <form class="comment-form" id="comment-form">
     <textarea
       name="content"
-      placeholder={loginRequired ? t(locale, 'comment.loginRequired') : t(locale, 'comment.placeholder')}
-      disabled={loginRequired}
+      placeholder={disabled ? t(locale, 'comment.loginRequired') : t(locale, 'comment.placeholder')}
+      disabled={disabled}
       required
     />
-    <button type="submit" class="primary" disabled={loginRequired}>{t(locale, 'comment.submit')}</button>
+    <div class="comment-actions">
+      <span class="comment-status" id="comment-status" style="display:none"></span>
+      <button type="submit" class="primary" disabled={disabled}>{t(locale, 'comment.submit')}</button>
+    </div>
   </form>
 
-  {
-    comments.length === 0 ? (
-      <div class="empty-state text-muted">{t(locale, 'comment.noComments')}</div>
-    ) : (
-      <ul class="comment-list">
-        {comments.map((c) => {
-          const d = typeof c.createdAt === 'string' ? new Date(c.createdAt) : c.createdAt;
-          return (
-            <li class="comment">
-              <div class="comment__header">
-                <span class="comment__author">{c.author}</span>
-                <span>· {d.toLocaleString(locale === 'zh' ? 'zh-CN' : 'en-US')}</span>
-              </div>
-              <div class="comment__body">{c.content}</div>
-            </li>
-          );
-        })}
-      </ul>
-    )
-  }
+  <ul class="comment-list" id="comment-list">
+    {comments.map((c) => {
+      const d = typeof c.createdAt === 'string' ? new Date(c.createdAt) : c.createdAt;
+      return (
+        <li class="comment">
+          <div class="comment__header">
+            <span class="comment__author">{c.author}</span>
+            <span class="comment__time">· {d.toLocaleString(locale === 'zh' ? 'zh-CN' : 'en-US')}</span>
+          </div>
+          <div class="comment__body">{c.content}</div>
+        </li>
+      );
+    })}
+  </ul>
+  {comments.length === 0 && <div class="empty-state text-muted" id="comment-empty">{t(locale, 'comment.noComments')}</div>}
 </section>
+
+{!disabled && (
+  <script>
+    const form = document.getElementById('comment-form') as HTMLFormElement;
+    const statusEl = document.getElementById('comment-status') as HTMLSpanElement;
+    const list = document.getElementById('comment-list') as HTMLUListElement;
+    const emptyEl = document.getElementById('comment-empty');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const textarea = form.querySelector('textarea') as HTMLTextAreaElement;
+      const btn = form.querySelector('button') as HTMLButtonElement;
+      const content = textarea.value.trim();
+      if (!content) return;
+
+      btn.disabled = true;
+      statusEl.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/comment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ targetType: '{targetType}', targetId: '{targetId}', content }),
+        });
+        const data = await res.json() as { error?: string; ok?: boolean; comment?: { author: string; content: string; createdAt: string } };
+        if (!res.ok || !data.comment) {
+          statusEl.textContent = data.error || '评论失败';
+          statusEl.style.color = '#f87171';
+          statusEl.style.display = 'inline';
+          return;
+        }
+
+        // Add comment to list
+        const d = new Date(data.comment.createdAt);
+        const li = document.createElement('li');
+        li.className = 'comment';
+        li.innerHTML = `<div class="comment__header"><span class="comment__author">${data.comment.author}</span><span class="comment__time">· ${d.toLocaleString('zh-CN')}</span></div><div class="comment__body">${data.comment.content}</div>`;
+        list.insertBefore(li, list.firstChild);
+
+        textarea.value = '';
+        if (emptyEl) emptyEl.style.display = 'none';
+      } catch {
+        statusEl.textContent = '网络错误';
+        statusEl.style.color = '#f87171';
+        statusEl.style.display = 'inline';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+)}
+
+<style>
+.comment-section { margin-top: 2rem; }
+.comment-title { font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-text, #e0e0e0); }
+.comment-form { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+.comment-form textarea {
+  width: 100%; min-height: 80px; padding: 0.75rem;
+  background: var(--color-surface, #1a1a2e); border: 1px solid var(--color-border, #2a2a4a);
+  border-radius: 8px; color: var(--color-text, #e0e0e0); font-size: 0.95rem; resize: vertical;
+}
+.comment-form textarea:focus { outline: none; border-color: var(--color-accent, #7c5cfc); }
+.comment-actions { display: flex; align-items: center; gap: 1rem; }
+.comment-status { font-size: 0.85rem; }
+.comment-form .primary {
+  padding: 0.5rem 1.2rem; background: var(--color-accent, #7c5cfc); color: white;
+  border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
+}
+.comment-form .primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.comment-list { list-style: none; padding: 0; }
+.comment { padding: 1rem 0; border-bottom: 1px solid var(--color-border, #2a2a4a); }
+.comment__header { font-size: 0.85rem; margin-bottom: 0.4rem; }
+.comment__author { font-weight: 600; color: var(--color-accent, #7c5cfc); }
+.comment__time { color: var(--color-muted, #888); }
+.comment__body { font-size: 0.95rem; line-height: 1.6; }
+.empty-state { text-align: center; padding: 2rem 0; }
+</style>

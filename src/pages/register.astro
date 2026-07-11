@@ -64,7 +64,12 @@ const locale = resolveLocale(Astro.url.searchParams.get('lang'));
         return;
       }
       document.cookie = `session=${data.token};path=/;max-age=604800;SameSite=Lax`;
-      window.location.href = '/';
+      errorDiv.textContent = '注册成功！即将跳转...';
+      errorDiv.style.display = 'block';
+      errorDiv.style.color = '#4ade80';
+      errorDiv.style.background = 'rgba(74,222,128,0.1)';
+      errorDiv.style.border = '1px solid rgba(74,222,128,0.2)';
+      setTimeout(() => { window.location.href = '/'; }, 1500);
     } catch {
       errorDiv.textContent = 'Network error, please try again';
       errorDiv.style.display = 'block';
