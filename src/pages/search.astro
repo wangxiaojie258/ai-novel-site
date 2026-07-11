@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookGrid from '../components/BookGrid.astro';
+import { resolveLocale, t } from '../i18n';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const q = Astro.url.searchParams.get('q')?.trim() ?? '';
+
+interface SearchResult {
+  id: string;
+  title: string;
+  author: string;
+  cover: string;
+  excerpt: string;
+  category: string;
+  chapterCount: number;
+  wordCount: number;
+  href: string;
+  status?: 'ongoing' | 'completed';
+}
+
+let results: SearchResult[] = [];
+let searching = q.length > 0;
+
+if (searching) {
+  const keyword = q.toLowerCase();
+  const novels = await getCollection('novels');
+  const classics = await getCollection('classics');
+  const allBooks = [...novels, ...classics];
+
+  results = allBooks
+    .filter((entry) => {
+      const d = entry.data;
+      return (
+        (d.title ?? '').toLowerCase().includes(keyword) ||
+        (d.author ?? '').toLowerCase().includes(keyword) ||
+        (Array.isArray(d.tags) ? d.tags.join(' ').toLowerCase() : '').includes(keyword) ||
+        (d.excerpt ?? '').toLowerCase().includes(keyword)
+      );
+    })
+    .slice(0, 30)
+    .map((entry) => ({
+      id: entry.id,
+      title: entry.data.title,
+      author: entry.data.author,
+      cover: entry.data.cover ?? '',
+      excerpt: entry.data.excerpt ?? '',
+      category: entry.data.category ?? '通用',
+      chapterCount: entry.data.chapterCount ?? 0,
+      wordCount: entry.data.wordCount ?? 0,
+      href: entry.collection === 'novels' ? `/novels/${entry.id}` : `/classics/${entry.id}`,
+      status: ((entry.data as Record<string, unknown>).status as 'ongoing' | 'completed') ?? 'ongoing',
+    }));
+}
+
+const books = results.map((r) => ({
+  id: r.id,
+  title: r.title,
+  author: r.author,
+  cover: r.cover,
+  status: r.status ?? 'ongoing',
+  category: r.category,
+  chapterCount: r.chapterCount,
+  wordCount: r.wordCount,
+  href: r.href,
+}));
+---
+
+<BaseLayout title={`搜索: ${q || '小说'} · ${t(locale, 'site.name')}`} locale={locale}>
+  <div class="page">
+    <h1 class="page__title">搜索小说</h1>
+
+    <form class="search-bar" action="/search" method="GET">
+      <input
+        type="search"
+        name="q"
+        value={q}
+        placeholder="输入书名、作者或标签..."
+        class="search-bar-input"
+        autofocus
+      />
+      <button type="submit" class="search-bar-btn">搜索</button>
+    </form>
+
+    {!searching ? (
+      <p class="text-muted search-hint">输入关键词搜索全站小说</p>
+    ) : results.length === 0 ? (
+      <div class="empty-state">
+        <p>没有找到与「{q}」相关的小说</p>
+        <p class="text-muted">试试其他关键词</p>
+      </div>
+    ) : (
+      <>
+        <p class="text-muted mb-2">找到 {results.length} 条与「{q}」相关的结果</p>
+        <BookGrid books={books} locale={locale} variant="novel" emptyText="" />
+      </>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;
+  }
+  .page__title {
+    font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem;
+  }
+  .search-bar {
+    display: flex; gap: 0.5rem; margin-bottom: 2rem;
+  }
+  .search-bar-input {
+    flex: 1; max-width: 500px;
+    padding: 0.7rem 1rem;
+    background: var(--color-surface, #1a1a2e);
+    border: 1px solid var(--color-border, #2a2a4a);
+    border-radius: 8px;
+    color: var(--color-text, #e0e0e0);
+    font-size: 1rem;
+  }
+  .search-bar-input:focus {
+    outline: none;
+    border-color: var(--color-accent, #7c5cfc);
+  }
+  .search-bar-btn {
+    padding: 0.7rem 1.5rem;
+    background: var(--color-accent, #7c5cfc);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .search-bar-btn:hover { opacity: 0.9; }
+  .search-hint { margin-top: 1rem; font-size: 0.95rem; }
+  .empty-state {
+    text-align: center; padding: 4rem 2rem;
+    background: var(--color-surface, #1a1a2e);
+    border-radius: 12px;
+    border: 1px solid var(--color-border, #2a2a4a);
+  }
+  .empty-state p { font-size: 1.1rem; margin: 0 0 0.5rem; }
+  .text-muted { color: var(--color-muted, #888); }
+  .mb-2 { margin-bottom: 1rem; }
+</style>
