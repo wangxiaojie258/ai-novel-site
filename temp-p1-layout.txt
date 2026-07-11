@@ -1,0 +1,51 @@
+﻿commit 1fb9bac17ac3761a8a2f79e736b2c7b93f3cffa6
+Author: wangxiaojie258 <[email protected]>
+Date:   Thu Jul 9 00:03:10 2026 +0800
+
+    P1: about page + SEO + model attribution
+
+diff --git a/src/layouts/BaseLayout.astro b/src/layouts/BaseLayout.astro
+index 25a1122..3b9c48e 100644
+--- a/src/layouts/BaseLayout.astro
++++ b/src/layouts/BaseLayout.astro
+@@ -8,11 +8,13 @@ interface Props {
+   title: string;
+   description?: string;
+   ogImage?: string;
++  ogType?: string;
+   locale?: string | null;
+   bodyClass?: string;
++  structuredData?: Record<string, unknown>;
+ }
+ 
+-const { title, description, ogImage, locale, bodyClass } = Astro.props;
++const { title, description, ogImage, ogType, locale, bodyClass, structuredData } = Astro.props;
+ 
+ const resolvedLocale: Locale = isLocale(locale ?? undefined) ? (locale as Locale) : DEFAULT_LOCALE;
+ const siteName = t(resolvedLocale, 'site.name');
+@@ -20,6 +22,7 @@ const desc = description ?? t(resolvedLocale, 'site.tagline');
+ const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
+ const og = ogImage ?? '/og-image.svg';
+ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://ai-novel.example.com').toString();
++const ogTyp = ogType ?? 'website';
+ ---
+ 
+ <!doctype html>
+@@ -34,8 +37,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://ai-novel.ex
+     <meta property="og:title" content={fullTitle} />
+     <meta property="og:description" content={desc} />
+     <meta property="og:image" content={og} />
+-    <meta property="og:type" content="website" />
++    <meta property="og:url" content={canonical} />
++    <meta property="og:type" content={ogTyp} />
++    <meta property="og:site_name" content={siteName} />
+     <meta name="twitter:card" content="summary_large_image" />
++    <meta name="twitter:title" content={fullTitle} />
++    <meta name="twitter:description" content={desc} />
++    <meta name="twitter:image" content={og} />
++    {structuredData && (
++      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
++    )}
+   </head>
+   <body class={bodyClass}>
+     <Header locale={resolvedLocale} />

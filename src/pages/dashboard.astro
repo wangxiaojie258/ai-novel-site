@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { resolveLocale, t } from '../i18n';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const locale = resolveLocale(Astro.url.searchParams.get('lang'));
+const session = (Astro.locals as Record<string, unknown>).session as
+  | { sub: string; role: string; username?: string }
+  | null;
+
+// Fetch dashboard data server-side
+interface DashboardData {
+  username: string;
+  bookshelfCount: number;
+  readingNow: Array<{ novelId: string; chapterNumber: number; chapterTitle: string; updatedAt: string }>;
+  recentComments: Array<{ id: string; targetType: string; targetId: string; content: string; createdAt: string }>;
+}
+
+let data: DashboardData | null = null;
+
+if (session) {
+  try {
+    const res = await fetch(new URL('/api/dashboard', Astro.url.origin), {
+      headers: { Cookie: `session=${Astro.cookies.get('session')?.value ?? ''}` },
+    });
+    if (res.ok) {
+      data = await res.json() as DashboardData;
+    }
+  } catch {}
+}
+
+// Enrich reading now with novel titles
+const allNovels = data ? await getCollection('novels') : [];
+const readingWithTitles = (data?.readingNow ?? []).map((r) => {
+  const novel = allNovels.find((n) => n.id === r.novelId);
+  return {
+    ...r,
+    title: novel?.data.title ?? r.novelId,
+    cover: novel?.data.cover ?? '',
+    href: `/novels/${r.novelId}`,
+  };
+});
+---
+
+<BaseLayout title="仪表盘" locale={locale}>
+  <div class="page">
+    {!session ? (
+      <div class="login-prompt">
+        <h1>请先登录</h1>
+        <p>登录后查看您的阅读数据和书架</p>
+        <a href="/login"><button class="primary">去登录</button></a>
+      </div>
+    ) : !data ? (
+      <div class="loading">加载中...</div>
+    ) : (
+      <>
+        <h1 class="page__title">欢迎回来，{data.username}</h1>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-value">{data.bookshelfCount}</span>
+            <span class="stat-label">书架藏书</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{readingWithTitles.length}</span>
+            <span class="stat-label">阅读中</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{data.recentComments.length}</span>
+            <span class="stat-label">评论</span>
+          </div>
+        </div>
+
+        {readingWithTitles.length > 0 && (
+          <section class="section">
+            <h2>继续阅读</h2>
+            <div class="reading-list">
+              {readingWithTitles.map((r) => (
+                <a href={r.href} class="reading-item">
+                  {r.cover && <img src={r.cover} alt={r.title} class="reading-cover" />}
+                  <div class="reading-info">
+                    <strong>{r.title}</strong>
+                    <span class="text-muted">第{r.chapterNumber}章 · {r.chapterTitle}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="two-col">
+          <section class="section">
+            <h2>快速入口</h2>
+            <div class="quick-links">
+              <a href="/bookshelf" class="quick-link">📚 我的书架</a>
+              <a href="/novels" class="quick-link">🔍 浏览书库</a>
+              <a href="/search" class="quick-link">🔎 搜索小说</a>
+            </div>
+          </section>
+
+          {data.recentComments.length > 0 && (
+            <section class="section">
+              <h2>最近评论</h2>
+              <div class="comment-mini-list">
+                {data.recentComments.slice(0, 5).map((c) => (
+                  <div class="comment-mini">
+                    <p class="comment-mini__text">「{c.content.slice(0, 50)}{c.content.length > 50 ? '...' : ''}」</p>
+                    <span class="text-muted">{new Date(c.createdAt).toLocaleDateString('zh-CN')}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+  .page__title { font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .login-prompt { text-align: center; padding: 4rem 2rem; }
+  .login-prompt h1 { margin-bottom: 0.5rem; }
+  .login-prompt p { color: var(--color-muted, #888); margin-bottom: 1.5rem; }
+  .primary { padding: 0.7rem 1.5rem; background: var(--color-accent, #7c5cfc); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+  .primary:hover { opacity: 0.9; }
+  .loading { text-align: center; padding: 4rem; color: var(--color-muted, #888); }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--color-surface, #1a1a2e); border: 1px solid var(--color-border, #2a2a4a); border-radius: 10px; padding: 1.25rem; text-align: center; }
+  .stat-value { display: block; font-size: 2rem; font-weight: 700; color: var(--color-accent, #7c5cfc); }
+  .stat-label { display: block; font-size: 0.85rem; color: var(--color-muted, #888); margin-top: 0.25rem; }
+
+  .section { margin-bottom: 2rem; }
+  .section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+
+  .reading-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .reading-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--color-surface, #1a1a2e); border: 1px solid var(--color-border, #2a2a4a); border-radius: 8px; text-decoration: none; color: var(--color-text, #e0e0e0); transition: border-color 0.2s; }
+  .reading-item:hover { border-color: var(--color-accent, #7c5cfc); }
+  .reading-cover { width: 45px; height: 60px; object-fit: cover; border-radius: 4px; }
+  .reading-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .quick-links { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quick-link { display: block; padding: 0.75rem 1rem; background: var(--color-surface, #1a1a2e); border: 1px solid var(--color-border, #2a2a4a); border-radius: 8px; text-decoration: none; color: var(--color-text, #e0e0e0); transition: border-color 0.2s; }
+  .quick-link:hover { border-color: var(--color-accent, #7c5cfc); }
+
+  .comment-mini-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .comment-mini { padding: 0.6rem 0.75rem; background: var(--color-surface, #1a1a2e); border-radius: 6px; }
+  .comment-mini__text { margin: 0 0 0.25rem; font-size: 0.9rem; color: var(--color-text, #e0e0e0); }
+
+  .text-muted { color: var(--color-muted, #888); font-size: 0.85rem; }
+
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>

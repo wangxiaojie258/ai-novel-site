@@ -1,0 +1,18 @@
+﻿commit 1fb9bac17ac3761a8a2f79e736b2c7b93f3cffa6
+Author: wangxiaojie258 <[email protected]>
+Date:   Thu Jul 9 00:03:10 2026 +0800
+
+    P1: about page + SEO + model attribution
+
+diff --git a/src/i18n/zh.json b/src/i18n/zh.json
+index e137bbf..66f1219 100644
+--- a/src/i18n/zh.json
++++ b/src/i18n/zh.json
+@@ -9,6 +9,7 @@
+     "classics": "经典名著",
+     "rankings": "榜单",
+     "aiCreators": "AI 创作者",
++    "about": "关于",
+     "bookshelf": "我的书架",
+     "submit": "AI 上传"
+   },

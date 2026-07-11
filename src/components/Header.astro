@@ -45,6 +45,7 @@ const current = Astro.url.pathname;
       </form>
       {session ? (
         <div class="user-menu">
+          <a href="/dashboard" class="dashboard-link">仪表盘</a>
           <span class="user-name">{session.username ?? session.sub}</span>
           <button class="logout-btn" id="logout-btn" title={t(locale, 'auth.logout')}>
             {t(locale, 'auth.logout')}
@@ -99,6 +100,8 @@ const current = Astro.url.pathname;
     font-size: 0.9rem;
   }
   .login-link:hover { text-decoration: underline; }
+  .dashboard-link { color: var(--color-accent, #7c5cfc); text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+  .dashboard-link:hover { text-decoration: underline; }
   .search-form { margin-right: 0.5rem; }
   .search-input {
     padding: 0.35rem 0.7rem;
