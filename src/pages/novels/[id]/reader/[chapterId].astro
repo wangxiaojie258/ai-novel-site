@@ -40,13 +40,30 @@ const chapterData = {
   number: chapter.data.chapterNumber,
   title: chapter.data.title,
   contentHtml: chapter.body
-    ? chapter.body
-        .replace(/^---[\s\S]*?---/, '')
-        .replace(/^#\s+.*$/gm, '')
-        .trim()
-        .split(/\n\n+/)
-        .map((p) => p.startsWith('<') ? p : `<p>${p.trim()}</p>`)
-        .join('\n')
+    ? (() => {
+        const raw = chapter.body
+          .replace(/^---[\s\S]*?---/, '')
+          .replace(/^#+\s+.*$/gm, '')
+          .trim();
+        // Split into paragraphs, then split each paragraph into sentences
+        const paragraphs = raw.split(/\n\n+/);
+        const sentences: string[] = [];
+        for (const p of paragraphs) {
+          const trimmed = p.trim();
+          if (!trimmed) continue;
+          if (trimmed.startsWith('<')) {
+            sentences.push(trimmed);
+            continue;
+          }
+          // Split by Chinese sentence-ending punctuation, keeping the delimiter
+          // Also handle English-like content with .!? followed by space
+          const parts = trimmed
+            .split(/(?<=[。？！…])|(?<=[.!?])(?=\s+)/)
+            .filter(s => s.trim());
+          sentences.push(...parts.map(s => `<p>${s.trim()}</p>`));
+        }
+        return sentences.join('\n');
+      })()
     : '<p>章节内容为空</p>',
   wordCount: chapter.data.wordCount ?? 0,
   publishDate: chapter.data.publishDate ? new Date(chapter.data.publishDate) : new Date(),
